@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SecNLP - Portal contra el Ciberacoso</title>
+<link rel="stylesheet" href="/static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- BARRA GOBIERNO -->
+<div class="gov-bar">
+  <div class="gov-bar-inner">
+    <svg class="gov-seal" viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 10h10M10 5v10" stroke="currentColor" stroke-width="1.5"/></svg>
+    <span>Portal Oficial de Prevención del Ciberacoso</span>
+    <span class="gov-domain">.gov</span>
+  </div>
+</div>
+
+<!-- HEADER PRINCIPAL -->
+<header class="main-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 32 32" width="36" height="36">
+            <path d="M16 2L4 8v8c0 7.4 5.1 14.3 12 16 6.9-1.7 12-8.6 12-16V8l-12-6z" fill="none" stroke="#1a73e8" stroke-width="2.5"/>
+            <path d="M12 16l3 3 5-6" fill="none" stroke="#1a73e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>SecNLP</h1>
+          <span>Plataforma de Detección y Prevención del Ciberacoso</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="emergency-badge">Línea de Ayuda (Panamá): <strong>+507 800-1725</strong></span>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a href="#que-es">¿Qué es?</a>
+      <a href="#senales">Señales</a>
+      <a href="#prevenir">Prevenir</a>
+      <a href="#que-hacer">Qué Hacer</a>
+      <a href="#consejos">Expertos</a>
+      <a href="#analizador">Analizador IA</a>
+      <a href="#recursos">Recursos</a>
+      <a href="/classifier">Clasificador</a>
+      <a href="/guia-seguridad">🔐 Seguridad</a>
+      <a href="/guia-padres">👪 Padres</a>
+      <a href="/reportar">📱 Reportar</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <span class="hero-tag">PREVENCIÓN &bull; DETECCIÓN &bull; ACCIÓN</span>
+      <h2>Juntos contra el <span class="highlight">Ciberacoso</span></h2>
+      <p>El ciberacoso es el uso de tecnología digital para acosar, amenazar o humillar a una persona. Afecta a 1 de cada 3 jóvenes en el mundo. Con las herramientas adecuadas, podemos detectarlo, prevenirlo y detenerlo.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>16%</strong>
+          <span>de estudiantes sufren ciberacoso</span>
+        </div>
+        <div class="hero-stat">
+          <strong>2x</strong>
+          <span>más frecuente en niñas que niños</span>
+        </div>
+        <div class="hero-stat">
+          <strong>24/7</strong>
+          <span>el acoso no se detiene nunca</span>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#analizador" class="btn-primary">Analizar Texto con IA</a>
+        <a href="#recursos" class="btn-secondary">Obtener Ayuda</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-shield">
+        <svg viewBox="0 0 200 200" width="200" height="200">
+          <defs>
+            <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1a73e8"/>
+              <stop offset="100%" stop-color="#4285f4"/>
+            </linearGradient>
+          </defs>
+          <path d="M100 20L20 60v50c0 46 34 89 80 100 46-11 80-54 80-100V60l-80-40z" fill="url(#sg)" opacity="0.15" stroke="#1a73e8" stroke-width="3"/>
+          <path d="M80 100l15 15 25-30" fill="none" stroke="#1a73e8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="100" cy="100" r="60" fill="none" stroke="#1a73e8" stroke-width="2" opacity="0.3"/>
+          <path d="M60 80q40-20 80 0" fill="none" stroke="#1a73e8" stroke-width="2" opacity="0.2"/>
+          <path d="M60 120q40 20 80 0" fill="none" stroke="#1a73e8" stroke-width="2" opacity="0.2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none"><path d="M0 32c240 0 480-32 720-32s480 32 720 32v32H0z" fill="#0a0a1a"/></svg>
+  </div>
+</section>
+
+<!-- QUÉ ES -->
+<section id="que-es" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2>¿Qué es el Ciberacoso?</h2>
+      <p class="section-desc">El ciberacoso (o cyberbullying) es toda agresión psicológica repetida que se realiza a través de plataformas digitales.</p>
+    </div>
+    <div class="info-grid-3">
+      <div class="info-card">
+        <div class="info-icon-wrap persistent">
+          <svg viewBox="0 0 24 24" width="32" height="32"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+        </div>
+        <h3>Persistente</h3>
+        <p>Los dispositivos digitales permiten comunicación inmediata y continua las 24 horas del día. Las víctimas no encuentran alivio ni siquiera en casa.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon-wrap permanent">
+          <svg viewBox="0 0 24 24" width="32" height="32"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/></svg>
+        </div>
+        <h3>Permanent</h3>
+        <p>El contenido publicado en internet rara vez desaparece por completo. Puede afectar admisiones universitarias, empleo y la reputación digital a largo plazo.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon-wrap hidden-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z" fill="currentColor"/></svg>
+        </div>
+        <h3>Difícil de Detectar</h3>
+        <p>Padres y maestros no siempre pueden ver lo que ocurre en las pantallas. El acoso puede pasar desapercibido hasta que el daño ya está hecho.</p>
+      </div>
+    </div>
+    <div class="info-box">
+      <div class="info-box-icon">📱</div>
+      <div class="info-box-text">
+        <strong>¿Dónde ocurre?</strong>
+        <p>Redes sociales (Instagram, TikTok, Facebook, Snapchat), mensajes de texto, aplicaciones de mensajería (WhatsApp, Telegram), foros en línea, comunidades de videojuegos y correo electrónico.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÑALES DE ALERTA -->
+<section id="senales" class="section alt-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2>Señales de Alerta</h2>
+      <p class="section-desc">Reconocer las señales tempranas del ciberacoso es el primer paso para intervenir. Estas son las señales más comunes.</p>
+    </div>
+    <div class="warning-grid">
+      <div class="warning-card">
+        <div class="warning-icon">📱</div>
+        <h3>Cambios en el uso del dispositivo</h3>
+        <p>Aumento o disminución notable en el uso del teléfono o computadora. El niño revisa constantemente notificaciones con ansiedad.</p>
+      </div>
+      <div class="warning-card">
+        <div class="warning-icon">😢</div>
+        <h3>Reacciones emocionales</h3>
+        <p>Risa nerviosa, enojo o tristeza mientras usa dispositivos. Se muestra upset después de estar en línea.</p>
+      </div>
+      <div class="warning-card">
+        <div class="warning-icon">🙈</div>
+        <h3>Oculta la pantalla</h3>
+        <p>Esconde la pantalla cuando alguien se acerca. Evita hablar sobre lo que hace en internet y cierra apps abruptamente.</p>
+      </div>
+      <div class="warning-card">
+        <div class="warning-icon">🚫</div>
+        <h3>Cierre de cuentas</h3>
+        <p>Cuentas de redes sociales que desaparecen y aparecen nuevas repetidamente. Cambios frecuentes de perfiles.</p>
+      </div>
+      <div class="warning-card">
+        <div class="warning-icon">🏠</div>
+        <h3>Aislamiento social</h3>
+        <p>Evita situaciones sociales que antes disfrutaba. Se vuelve retraído, deprimido o pierde interés en actividades y amigos.</p>
+      </div>
+      <div class="warning-card">
+        <div class="warning-icon">⚠️</div>
+        <h3>Problemas escolares</h3>
+        <p>Disminución del rendimiento académico, falta de concentración, absentismo escolar o quejas constantes de enfermedades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO PREVENIR -->
+<section id="prevenir" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2>Cómo Prevenir el Ciberacoso</h2>
+      <p class="section-desc">La prevención es la herramienta más poderosa. Estas estrategias ayudan a crear un entorno digital seguro.</p>
+    </div>
+    <div class="prevention-steps">
+      <div class="prevention-step">
+        <div class="step-marker">1</div>
+        <div class="step-content">
+          <h3>Educación Digital</h3>
+          <p>Enseña a niños y jóvenes sobre seguridad en línea: no compartir contraseñas, no aceptar desconocidos, pensar antes de publicar. El conocimiento es la primera defensa.</p>
+        </div>
+        <div class="step-icon">📚</div>
+      </div>
+      <div class="prevention-step">
+        <div class="step-marker">2</div>
+        <div class="step-content">
+          <h3>Comunicación Abierta</h3>
+          <p>Habla regularmente con los jóvenes sobre sus experiencias en línea. Crea un ambiente de confianza donde se sientan seguros de reportar cualquier situación incómoda sin miedo a represalias.</p>
+        </div>
+        <div class="step-icon">💬</div>
+      </div>
+      <div class="prevention-step">
+        <div class="step-marker">3</div>
+        <div class="step-content">
+          <h3>Configuración de Privacidad</h3>
+          <p>Ayuda a configurar las opciones de privacidad en todas las plataformas. Activa la autenticación de dos factores, limita quién puede contactar y revisa las configuraciones periódicamente.</p>
+        </div>
+        <div class="step-icon">🔒</div>
+      </div>
+      <div class="prevention-step">
+        <div class="step-marker">4</div>
+        <div class="step-content">
+          <h3>Reglas Familiares</h3>
+          <p>Establece acuerdos claros sobre el uso de tecnología: horarios, aplicaciones permitidas, zonas libres de dispositivos (como el comedor) y consecuencias acordadas por todos.</p>
+        </div>
+        <div class="step-icon">📋</div>
+      </div>
+      <div class="prevention-step">
+        <div class="step-marker">5</div>
+        <div class="step-content">
+          <h3>Supervisión Activa</h3>
+          <p>Conoce las plataformas que usan los jóvenes. Sigue sus cuentas públicas, revisa periódicamente sus amigos/seguidores, y utiliza herramientas de control parental sin invadir su privacidad.</p>
+        </div>
+        <div class="step-icon">👁️</div>
+      </div>
+      <div class="prevention-step">
+        <div class="step-marker">6</div>
+        <div class="step-content">
+          <h3>Empatía y Respeto</h3>
+          <p>Enseña la regla de oro digital: "No hagas en línea lo que no harías en persona". Fomenta la empatía explicando el impacto real que las palabras tienen en los demás.</p>
+        </div>
+        <div class="step-icon">❤️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ HACER -->
+<section id="que-hacer" class="section alt-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2>¿Qué Hacer Cuando Ocurre?</h2>
+      <p class="section-desc">Si sospechas que alguien está sufriendo ciberacoso, sigue estos pasos respaldados por expertos en prevención.</p>
+    </div>
+    <div class="action-timeline">
+      <div class="action-item">
+        <div class="action-num">01</div>
+        <div class="action-body">
+          <h3>NOTAR</h3>
+          <p>Reconoce si hay cambios en el estado de ánimo o comportamiento. Identifica si ocurren alrededor del uso de dispositivos digitales.</p>
+        </div>
+        <div class="action-icon">👀</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">02</div>
+        <div class="action-body">
+          <h3>HABLAR</h3>
+          <p>Haz preguntas para entender qué está pasando, cómo empezó y quién está involucrado. Escucha sin juzgar y ofrece apoyo incondicional.</p>
+        </div>
+        <div class="action-icon">🗣️</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">03</div>
+        <div class="action-body">
+          <h3>DOCUMENTAR</h3>
+          <p>Toma capturas de pantalla de todo: mensajes, publicaciones, comentarios. Guarda fechas, horas y URLs. La evidencia es crucial para tomar acción.</p>
+        </div>
+        <div class="action-icon">📸</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">04</div>
+        <div class="action-body">
+          <h3>REPORTAR</h3>
+          <p>Reporta el contenido a la plataforma donde ocurrió. Informa a la escuela si es entre compañeros. Si hay amenazas físicas o contenido ilegal, contacta a la policía.</p>
+        </div>
+        <div class="action-icon">🚨</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">05</div>
+        <div class="action-body">
+          <h3>APOYAR</h3>
+          <p>Brinda apoyo emocional a la víctima. Involucra a consejeros escolares o profesionales de salud mental si es necesario. Nadie debería enfrentar esto solo.</p>
+        </div>
+        <div class="action-icon">🤝</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSEJOS DE EXPERTOS -->
+<section id="consejos" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">ⓘ</span>
+      <h2>Consejos de Expertos</h2>
+      <p class="section-desc">Recomendaciones de organizaciones internacionales como stopbullying.gov, UNICEF y Child Mind Institute.</p>
+    </div>
+    <div class="expert-grid">
+      <div class="expert-card">
+        <div class="expert-tag adults">Para Adultos</div>
+        <h3>Si eres víctima de ciberacoso siendo adulto</h3>
+        <p>El ciberacoso no solo afecta a niños y adolescentes. Los adultos también pueden ser víctimas en el trabajo, redes sociales o relaciones personales.</p>
+        <ul>
+          <li><strong>No respondas</strong> — Los acosadores buscan reacción. Ignorar es la primera línea de defensa.</li>
+          <li><strong>Documenta todo</strong> — Guarda capturas de pantalla, fechas y URLs. Esta evidencia es crucial si decides tomar acciones legales.</li>
+          <li><strong>Bloquea y reporta</strong> — Usa las herramientas de bloqueo de cada plataforma. Reporta el perfil del acosador.</li>
+          <li><strong>Habla con alguien</strong> — El ciberacoso puede ser aislante. Comparte tu experiencia con amigos, familia o un profesional de salud mental.</li>
+          <li><strong>Conoce tus derechos</strong> — En muchos países, el ciberacoso es ilegal. Consulta con un abogado si las amenazas son graves.</li>
+        </ul>
+        <p class="expert-source">Fuente: <a href="https://cyberbullying.org/advice-for-adult-victims-of-cyberbullying" target="_blank">cyberbullying.org</a></p>
+      </div>
+      <div class="expert-card">
+        <div class="expert-tag parents">Para Padres</div>
+        <h3>Cómo ayudar a los niños a lidiar con el ciberacoso</h3>
+        <p>Si descubres que tu hijo está siendo víctima de ciberacoso, sigue estas recomendaciones del Child Mind Institute.</p>
+        <ul>
+          <li><strong>Reafirma tu amor</strong> — Hazle saber que no está solo y que estás ahí para apoyarlo incondicionalmente.</li>
+          <li><strong>Ayúdale a alejarse</strong> — Que tome un descanso de la computadora o dispositivo. La distancia ayuda a desescalar.</li>
+          <li><strong>No responder ni tomar represalias</strong> — Los acosadores buscan reacción. Ignorarlos les quita poder.</li>
+          <li><strong>Bloquear al acosador</strong> — Elimina a la persona de contactos y listas de amigos en todas las plataformas.</li>
+          <li><strong>Guardar evidencia</strong> — Conserva mensajes, capturas y publicaciones como prueba.</li>
+          <li><strong>Hablar con la escuela</strong> — El acoso en línea suele tener raíces en el entorno escolar.</li>
+          <li><strong>Contactar a las autoridades</strong> — Si hay amenazas físicas o de violencia, contacta a la policía inmediatamente.</li>
+        </ul>
+        <p class="expert-source">Fuente: <a href="https://childmind.org/es/articulo/como-ayudar-a-los-ninos-a-lidiar-con-el-cyberbullying/" target="_blank">Child Mind Institute</a></p>
+      </div>
+      <div class="expert-card">
+        <div class="expert-tag teens">Para Jóvenes</div>
+        <h3>Pasos inmediatos si eres víctima de ciberacoso</h3>
+        <p>Si alguien te está acosando en línea, estos pasos pueden ayudarte a protegerte y detener la situación.</p>
+        <ul>
+          <li><strong>Apaga el dispositivo</strong> — Aléjate de la pantalla. Tómate un tiempo para respirar y calmarte.</li>
+          <li><strong>No respondas</strong> — Los acosadores quieren que reacciones. No les des esa satisfacción.</li>
+          <li><strong>Bloquea al acosador</strong> — Elimínalo de tus contactos, redes sociales y cualquier plataforma.</li>
+          <li><strong>Guarda las pruebas</strong> — Capturas de pantalla, mensajes, todo. Esto es importante para reportar.</li>
+          <li><strong>Habla con un amigo</strong> — Comparte lo que está pasando con alguien de confianza. No tienes que enfrentarlo solo.</li>
+          <li><strong>Cuéntale a un adulto</strong> — Un padre, maestro o consejero escolar puede ayudarte a tomar acción. No es delatar, es defenderte.</li>
+        </ul>
+        <p class="expert-source">Fuente: <a href="https://childmind.org/es/articulo/como-ayudar-a-los-ninos-a-lidiar-con-el-cyberbullying/" target="_blank">Child Mind Institute</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALIZADOR SECNLP -->
+<section id="analizador" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2>Analizador de Texto con IA</h2>
+      <p class="section-desc">Usa inteligencia artificial para detectar patrones de ciberacoso en textos. Ingresa un mensaje y descubre si contiene lenguaje dañino.</p>
+    </div>
+    <div class="analyzer-container">
+      <div class="analyzer-card">
+        <div class="analyzer-tabs">
+          <button class="analyzer-tab active" data-mode="single">Analizar Texto</button>
+          <button class="analyzer-tab" data-mode="batch">Batch Test</button>
+        </div>
+        <div class="analyzer-body">
+          <div class="input-area">
+            <textarea id="textInput" placeholder="Pega aquí el texto que quieres analizar...&#10;&#10;Ej: 'Eres un fracasado, nadie te quiere aquí'" rows="5"></textarea>
+            <div class="input-tools">
+              <div class="input-chips">
+                <button class="chip" data-text="Eres una persona increíble, gracias por tu ayuda">✅ Positivo</button>
+                <button class="chip" data-text="Eres un idiota inútil, vete de aquí">⚠️ Tóxico</button>
+                <button class="chip" data-text="Te voy a encontrar y te voy a hacer daño">💀 Amenaza</button>
+                <button class="chip" data-text="L0s 1nm1gr4nt35 s0n 3sc0r14">🔐 Ofuscado</button>
+              </div>
+              <span id="charCount" class="char-count">0 caracteres</span>
+            </div>
+            <button id="analyzeBtn" class="btn-primary btn-lg">
+              <span class="btn-label">Analizar con IA</span>
+              <div class="spinner"></div>
+            </button>
+          </div>
+          <div id="resultPanel" class="result-area hidden">
+            <div class="result-header">
+              <h3>Resultado del Análisis</h3>
+              <span id="resultChip" class="result-chip">—</span>
+            </div>
+            <div class="result-content">
+              <div class="result-gauge-wrap">
+                <svg viewBox="0 0 120 120" class="gauge-svg">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="#1a1a3e" stroke-width="10"/>
+                  <circle id="gaugeArc" cx="60" cy="60" r="50" fill="none" stroke="#00e676" stroke-width="10"
+                    stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)" stroke-linecap="round"/>
+                  <text id="gaugeText" x="60" y="55" text-anchor="middle" fill="#fff" font-size="26" font-weight="700">0%</text>
+                  <text x="60" y="72" text-anchor="middle" fill="#666" font-size="9">TOXICIDAD</text>
+                </svg>
+              </div>
+              <div class="result-metrics">
+                <div class="rm-row"><span>Decisión:</span><strong id="resultAction">—</strong></div>
+                <div class="rm-row"><span>Confianza:</span><strong id="resultScore">—</strong></div>
+                <div class="rm-row"><span>Latencia:</span><strong id="resultLatency">—</strong></div>
+                <div class="rm-row"><span>Razón:</span><strong id="resultReason">—</strong></div>
+              </div>
+              <div id="resultCategories" class="result-cats"></div>
+            </div>
+            <div class="result-footer">
+              <button id="fpBtn" class="btn-ghost">Reportar falso positivo</button>
+              <button id="clearResultBtn" class="btn-ghost">Limpiar</button>
+            </div>
+          </div>
+        </div>
+        <div class="analyzer-info">
+          <p>El análisis usa un modelo de lenguaje BERT entrenado específicamente para detectar discurso de odio en español. No almacenamos los textos que analizas.</p>
+        </div>
+      </div>
+      <div class="analyzer-sidebar">
+        <div class="sidebar-card stats-card">
+          <h4>Estadísticas del Sistema</h4>
+          <div class="stat-item">
+            <span class="stat-label">Analizados</span>
+            <strong id="statTotal" class="stat-val">0</strong>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Bloqueados</span>
+            <strong id="statBlocked" class="stat-val danger">0</strong>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Seguros</span>
+            <strong id="statAllowed" class="stat-val safe">0</strong>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Tasa Bloqueo</span>
+            <strong id="statRate" class="stat-val">0%</strong>
+          </div>
+        </div>
+        <div class="sidebar-card tech-card">
+          <h4>Tecnología</h4>
+          <ul>
+            <li>Modelo: <strong>dehatebert-mono-spanish</strong></li>
+            <li>Anti-evasión: Leetspeak, homóglifos</li>
+            <li>Caché: SHA-256</li>
+            <li>Privacidad: Análisis local</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section id="recursos" class="section alt-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <h2>Recursos y Ayuda</h2>
+      <p class="section-desc">Si tú o alguien que conoces está sufriendo ciberacoso, estos recursos pueden ayudar.</p>
+    </div>
+    <div class="resources-grid">
+      <div class="resource-card primary">
+        <div class="resource-icon">🆘</div>
+        <h3>Línea de Crisis</h3>
+        <p class="resource-phone"><a href="tel:+5078001725">+507 800-1725</a></p>
+        <p>Atención 24/7 para víctimas de acoso y ciberacoso. Línea de ayuda nacional de Panamá.</p>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🧑‍⚖️</div>
+        <h3>Asesoría Legal</h3>
+        <p>El ciberacoso puede ser ilegal. Consulta las leyes de tu país sobre acoso digital, amenazas y discurso de odio. En Panamá, <strong>Legal IT Abogados</strong> (Lia P. Hernández) es especialista en Derecho Digital.</p>
+        <div style="margin-top:8px;padding:8px 12px;background:var(--bg2);border-radius:6px;font-size:12px">
+          📞 <strong>+507 800-1725</strong> (Línea de Ayuda)<br>
+          🌐 <a href="https://legalitabogados.com" target="_blank" style="color:var(--blue2)">legalitabogados.com</a><br>
+          ⚖️ Derecho Digital, Ciberacoso, Privacidad de Datos
+        </div>
+        <a href="https://legalitabogados.com" target="_blank" class="resource-link">Consultar abogado →</a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">🏫</div>
+        <h3>Recursos Escolares - UTP</h3>
+        <p>La Universidad Tecnológica de Panamá (UTP) ofrece servicios de orientación psicológica gratuita para estudiantes que enfrentan ciberacoso o problemas de salud mental.</p>
+        <div style="margin-top:8px;padding:8px 12px;background:var(--bg2);border-radius:6px;font-size:12px">
+          📍 <strong>Dirección Nacional de Orientación Psicológica</strong><br>
+          📞 <strong>(507) 560-3000</strong><br>
+          🕐 Lun-Vie 8:00am-4:00pm
+        </div>
+        <a href="https://utp.ac.pa/orientacion-psicologica" target="_blank" class="resource-link">Ir a Orientación Psicológica UTP →</a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">💻</div>
+        <h3>Seguridad Digital</h3>
+        <p>Centro de ayuda para configurar privacidad en redes sociales, bloquear usuarios, activar 2FA y aplicar medidas de protección contra acosadores.</p>
+        <a href="/guia-seguridad" class="resource-link">Guía completa de seguridad →</a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">👪</div>
+        <h3>Guía para Padres</h3>
+        <p>Cómo hablar con tus hijos sobre ciberacoso, establecer reglas digitales, crear un ambiente de confianza y usar herramientas de control parental.</p>
+        <a href="/guia-padres" class="resource-link">Guía interactiva para padres →</a>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">📱</div>
+        <h3>Reportar en Plataformas</h3>
+        <p>Instagram, TikTok, Facebook, Twitter/X, WhatsApp y YouTube tienen herramientas de reporte de acoso. Aprende paso a paso cómo usarlas con capturas ilustrativas.</p>
+        <a href="/reportar" class="resource-link">Guía paso a paso para reportar →</a>
+      </div>
+    </div>
+    <div class="resources-cta">
+      <h3>No estás solo. La ayuda está disponible.</h3>
+      <p>Si estás en peligro inmediato, llama al <strong>911</strong> (Panamá: <strong>104</strong> para policía, <strong>+507 800-1725</strong> para ayuda contra el acoso).</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>SecNLP Platform</h3>
+      <p>Plataforma de detección de discurso malicioso usando inteligencia artificial. Proyecto educativo de ciberseguridad.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Secciones</h4>
+        <a href="#que-es">¿Qué es?</a>
+        <a href="#senales">Señales</a>
+        <a href="#prevenir">Prevenir</a>
+        <a href="#que-hacer">Qué Hacer</a>
+        <a href="#consejos">Expertos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Recursos</h4>
+        <a href="/classifier">Clasificador IA</a>
+        <a href="/guia-seguridad">🔐 Seguridad Digital</a>
+        <a href="/guia-padres">👪 Guía Padres</a>
+        <a href="/reportar">📱 Reportar</a>
+      </div>
+      <div class="footer-col">
+        <h4>Tecnología</h4>
+        <span>FastAPI + Transformers</span>
+        <span>Prometheus + Docker</span>
+        <span>Modelo: dehatebert</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 SecNLP Platform. Proyecto educativo de detección de ciberacoso con NLP.</p>
+    <p class="footer-tag">Datos basados en stopbullying.gov, UNICEF y OMS.</p>
+  </div>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

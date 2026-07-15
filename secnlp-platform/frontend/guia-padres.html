@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Guía para Padres | SecNLP</title>
+<link rel="stylesheet" href="/static/classifier.css">
+<style>
+:root{--bg:#080818;--bg2:#0d0d28;--bg3:#14143a;--bg4:#1c1c4a;--border:#2a2a5a;--text:#e0e8ff;--text2:#8899cc;--text3:#5566aa;--blue:#4dabf7;--blue2:#228be6;--green:#51cf66;--red:#ff6b6b;--yellow:#fcc419;--purple:#7c4dff;--pink:#f06595;--radius:10px;--radius-lg:14px;--shadow:0 4px 24px rgba(0,0,0,.4)}
+.hero-banner{background:linear-gradient(135deg,#0d0d28,#1a1040,#2d1b69);border-radius:var(--radius-lg);padding:48px 40px;margin-bottom:24px;position:relative;overflow:hidden;border:1px solid rgba(124,77,255,.3)}
+.hero-banner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(124,77,255,.1),transparent 50%),radial-gradient(circle at 70% 60%,rgba(77,171,247,.08),transparent 50%);pointer-events:none}
+.hero-banner h2{font-size:32px;font-weight:800;margin-bottom:8px;position:relative}
+.hero-banner .grad{background:linear-gradient(135deg,var(--purple),var(--pink),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-banner p{font-size:15px;color:var(--text2);max-width:600px;line-height:1.7;position:relative}
+.hero-banner .banner-stats{display:flex;gap:24px;margin-top:20px;position:relative}
+.banner-stat{text-align:center}
+.banner-stat strong{display:block;font-size:24px;font-weight:800;color:var(--purple)}
+.banner-stat span{font-size:11px;color:var(--text3)}
+.section-title{font-size:22px;font-weight:700;margin:32px 0 16px;display:flex;align-items:center;gap:10px}
+.video-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+@media(max-width:700px){.video-card{grid-template-columns:1fr}}
+.video-frame{background:var(--bg);border-radius:var(--radius);aspect-ratio:16/9;overflow:hidden;border:1px solid var(--border);position:relative}
+.video-frame iframe{width:100%;height:100%;border:none}
+.video-info h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.video-info p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.video-info .tags{display:flex;gap:6px;flex-wrap:wrap}
+.video-info .tag{padding:3px 10px;border-radius:6px;font-size:10px;font-weight:600}
+.consejo-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px;border-left:4px solid var(--purple);transition:border-color .3s}
+.consejo-card:hover{border-color:var(--purple)}
+.consejo-card h4{font-size:15px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.consejo-card p{font-size:13px;color:var(--text2);line-height:1.7}
+.consejo-card .age-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600}
+.age-0-6{background:rgba(81,207,102,.15);color:var(--green)}
+.age-7-12{background:rgba(77,171,247,.15);color:var(--blue)}
+.age-13-17{background:rgba(240,101,149,.15);color:var(--pink)}
+.resource-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px}
+.resource-card h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.resource-card ul{list-style:none;padding:0}
+.resource-card li{padding:6px 0;font-size:13px;color:var(--text2);display:flex;gap:8px;align-items:flex-start}
+.resource-card li::before{content:'📌';font-size:12px}
+.resource-card li a{color:var(--blue);text-decoration:none}
+.resource-card li a:hover{text-decoration:underline}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+<header class="cl-header">
+<div class="cl-header-inner">
+<div class="cl-brand">
+<svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 2L4 8v8c0 7.4 5.1 14.3 12 16 6.9-1.7 12-8.6 12-16V8l-12-6z" fill="none" stroke="#7c4dff" stroke-width="2.5"/><path d="M12 16l3 3 5-6" fill="none" stroke="#7c4dff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div><h1>SecNLP <span style="color:#7c4dff">Guía para Padres</span></h1><span class="cl-subhead">Mantén a tus hijos seguros en el mundo digital</span></div>
+</div>
+<nav class="cl-nav"><a href="/">Portal</a><span class="cl-nav-sep">|</span><a href="/classifier">Clasificador</a><span class="cl-nav-sep">|</span><a href="/guia-seguridad">Seguridad</a><span class="cl-nav-sep">|</span><a href="/guia-padres" class="active">Padres</a><span class="cl-nav-sep">|</span><a href="/reportar">Reportar</a></nav>
+</div>
+</header>
+
+<main class="cl-main">
+
+<div class="hero-banner">
+<h2>👨‍👩‍👧‍👦 Guía para Padres: <span class="grad">Hijos Seguros en Línea</span></h2>
+<p>El mundo digital ofrece infinitas oportunidades, pero también riesgos. Esta guía te ayudará a proteger a tus hijos del ciberacoso, establecer reglas claras y crear un ambiente de confianza donde ellos se sientan seguros de compartir sus experiencias en línea.</p>
+<div class="banner-stats">
+<div class="banner-stat"><strong>16%</strong><span>de adolescentes sufre ciberacoso</span></div>
+<div class="banner-stat"><strong>60%</strong><span>no se lo cuenta a sus padres</span></div>
+<div class="banner-stat"><strong>2x</strong><span>más riesgo en redes sociales</span></div>
+</div>
+</div>
+
+<h3 class="section-title">📺 Videos Educativos Recomendados</h3>
+
+<div class="video-card">
+<div class="video-frame"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/1z0bKk5IfbU" title="¿Has sido víctima de ciberacoso?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="video-info">
+<h3>¿Has sido víctima de ciberacoso?</h3>
+<p>Video del Instituto Nacional de Ciberseguridad (INCIBE) que explica qué es el ciberacoso, cómo identificarlo y qué hacer si tu hijo es víctima. Ideal para ver con niños de 7 a 12 años.</p>
+<div class="tags"><span class="tag" style="background:rgba(77,171,247,.15);color:var(--blue)">🎯 Para niños 7-12</span><span class="tag" style="background:rgba(81,207,102,.15);color:var(--green)">⏱️ 2:30 min</span><span class="tag" style="background:rgba(124,77,255,.15);color:var(--purple)">📚 INCIBE</span></div>
+</div>
+</div>
+
+<div class="video-card">
+<div class="video-frame"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/ZHQ03fSn9J0" title="Ciberbullying - Cómo evitar el ciberacoso" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="video-info">
+<h3>Ciberbullying - Cómo evitar el ciberacoso</h3>
+<p>Video educativo con situaciones cotidianas que muestra cómo prevenir el ciberacoso, identificar señales de alerta y actuar a tiempo. Perfecto para conversar en familia.</p>
+<div class="tags"><span class="tag" style="background:rgba(240,101,149,.15);color:var(--pink)">👪 Para padres e hijos</span><span class="tag" style="background:rgba(81,207,102,.15);color:var(--green)">⏱️ 3:30 min</span><span class="tag" style="background:rgba(77,171,247,.15);color:var(--blue)">💬 Prevención</span></div>
+</div>
+</div>
+
+<div class="video-card">
+<div class="video-frame"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/fcVyk8XzUiw" title="Planta cara al ciberacoso" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="video-info">
+<h3>Planta cara al ciberacoso</h3>
+<p>Campaña de concienciación de INCIBE que muestra cómo actuar ante el ciberacoso: guardar pruebas, bloquear al acosador, reportar en la plataforma y pedir ayuda profesional.</p>
+<div class="tags"><span class="tag" style="background:rgba(240,101,149,.15);color:var(--pink)">👪 Para padres</span><span class="tag" style="background:rgba(81,207,102,.15);color:var(--green)">⏱️ 3:00 min</span><span class="tag" style="background:rgba(255,107,107,.15);color:var(--red)">🚨 INCIBE</span></div>
+</div>
+</div>
+
+<h3 class="section-title">🗣️ Cómo Hablar con tus Hijos</h3>
+
+<div class="consejo-card">
+<h4>👶 Niños de 6 a 9 años <span class="age-badge age-0-6">Edad temprana</span></h4>
+<p>Usa un lenguaje simple: "Internet es como un parque grande. Hay juegos divertidos, pero también personas que no conoces. Siempre ven a buscarme si algo te hace sentir raro." Establece reglas claras: nada de dispositivos en la habitación cerrada, horarios definidos, y siempre con supervisión directa.</p>
+</div>
+<div class="consejo-card">
+<h4>🧒 Niños de 10 a 12 años <span class="age-badge age-7-12">Preadolescentes</span></h4>
+<p>Explícales qué es el ciberacoso con ejemplos concretos: "Si alguien te envía mensajes que te hacen sentir mal, te insulta o comparte fotos tuyas sin permiso, eso es acoso." Enséñales a bloquear y reportar. Crea un "pacto digital" familiar con reglas escritas que todos firmen.</p>
+</div>
+<div class="consejo-card">
+<h4>👩 Adolescentes de 13 a 17 años <span class="age-badge age-13-17">Adolescentes</span></h4>
+<p>Respeta su privacidad pero mantente alerta. Pregunta: "¿Con quién hablas hoy?" en lugar de "¿Qué haces en el teléfono?". Habla sobre las consecuencias legales del ciberacoso y la importancia de no compartir contenido íntimo. Enséñales a identificar perfiles falsos y estafas.</p>
+</div>
+
+<h3 class="section-title">🛡️ Reglas Digitales para el Hogar</h3>
+
+<div class="resource-card">
+<ul>
+<li><strong>Zonas libres de pantallas:</strong> El comedor y los cuartos deben estar libres de dispositivos durante las comidas y después de cierta hora.</li>
+<li><strong>Tiempo máximo:</strong> 1-2 horas diarias de entretenimiento digital para menores de 12 años. Usa aplicaciones de control parental.</li>
+<li><strong>Contraseñas compartidas:</strong> Los padres deben conocer las contraseñas de los hijos hasta los 14-15 años, con acuerdo de confianza mutua.</li>
+<li><strong>Revisión semanal:</strong> Una vez por semana, revisen juntos la lista de amigos/seguidores y las configuraciones de privacidad.</li>
+<li><strong>Regla de oro:</strong> "No publiques nada en línea que no dirías en persona o que no quieras que vean tus abuelos."</li>
+<li><strong>Plan de acción:</strong> Si algo malo pasa en línea, tus hijos deben saber que pueden acudir a ti sin miedo a perder el dispositivo o ser castigados.</li>
+</ul>
+</div>
+
+<h3 class="section-title">📚 Recursos y Herramientas</h3>
+
+<div class="resource-card">
+<h4>Herramientas de Control Parental</h4>
+<ul>
+<li><strong>Google Family Link</strong> — Controla las apps, el tiempo de pantalla y la ubicación de tus hijos en Android. <a href="https://families.google.com/familylink/" target="_blank">families.google.com</a></li>
+<li><strong>Screen Time (iOS)</strong> — Control parental integrado en iPhone/iPad. Limita apps, contenido y compras. Configuración > Tiempo en Pantalla.</li>
+<li><strong>Microsoft Family Safety</strong> — Controla el tiempo en Windows y Xbox, filtra contenido web y revisa la actividad. <a href="https://account.microsoft.com/family/" target="_blank">account.microsoft.com/family</a></li>
+<li><strong>Qustodio</strong> — App multiplataforma gratuita con monitoreo avanzado de redes sociales, llamadas y mensajes. <a href="https://www.qustodio.com" target="_blank">qustodio.com</a></li>
+<li><strong>Bark</strong> — Monitorea mensajes de texto, correos y redes sociales en busca de señales de ciberacoso. <a href="https://www.bark.us" target="_blank">bark.us</a></li>
+</ul>
+</div>
+
+<div class="resource-card">
+<h4>Señales de Alerta para Padres</h4>
+<ul>
+<li>📱 Cambios repentinos en el uso del dispositivo (usa mucho más o mucho menos)</li>
+<li>😰 Ansiedad al recibir notificaciones o mensajes</li>
+<li>🙈 Esconde la pantalla cuando te acercas</li>
+<li>😴 Problemas para dormir o pesadillas frecuentes</li>
+<li>📉 Bajo rendimiento escolar repentino</li>
+<li>🚫 Pérdida de interés en actividades que antes disfrutaba</li>
+<li>😠 Cambios de humor drásticos después de estar en línea</li>
+</ul>
+<div class="tip-box" style="margin-top:12px;background:rgba(124,77,255,.08);border:1px solid rgba(124,77,255,.2);border-radius:var(--radius);padding:12px;border-left:4px solid var(--purple)">
+<strong>💜 Recuerda:</strong> Si notas estas señales, no castigues ni prohibas el dispositivo. Habla con calma, escucha sin juzgar y trabaja junto a tu hijo para resolver la situación.</div>
+</div>
+</main>
+
+<footer class="cl-footer"><p>SecNLP - Guía para Padres: Protege a tus hijos del ciberacoso</p>
+<p class="cl-footer-tech">Comunicación, confianza y educación digital son las mejores herramientas</p></footer>
+</div>
+</body>
+</html>

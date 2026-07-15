@@ -1,0 +1,12 @@
+Parcial #3
+
+Itmar Castillo  8-1027-180
+
+1-LINK DEL GITHUB
+
+https://github.com/itmar2005-ctrl/cybersec-chatbot.git
+
+
+2-LINK DE LA PAGINA 
+
+https://cybersec-chatbot-jd3q.onrender.com

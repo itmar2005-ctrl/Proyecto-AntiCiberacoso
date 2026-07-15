@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  moderation-engine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: secnlp-engine:v2.0
+    ports:
+      - "8000:8000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    environment:
+      - SECNLP_MODEL=Hate-speech-CNERG/dehatebert-mono-spanish
+      - SECNLP_THRESHOLD=0.70
+      - SECNLP_MAX_LENGTH=1000
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - secnet
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    networks:
+      - secnet
+
+networks:
+  secnet:
+    driver: bridge
+
+volumes:
+  prometheus-data:

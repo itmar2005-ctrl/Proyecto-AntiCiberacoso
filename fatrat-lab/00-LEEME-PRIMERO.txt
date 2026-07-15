@@ -1,0 +1,61 @@
+=====================================================================
+  LABORATORIO CONTROLADO - TheFatRat + Alternativas Modernas
+  Autor: Assistant
+  Fecha: Junio 2026
+=====================================================================
+
+ARQUITECTURA DEL LABORATORIO:
+
+  TU PC (Windows 11)
+    |
+    +-- VirtualBox + Kali Linux (ataque)
+    |     Dentro de Kali: TheFatRat, Veil, Sliver, Metasploit
+    |
+    +-- Docker (ataque directo desde Windows)
+    |     Contenedor Kali: TheFatRat
+    |
+    +-- Windows Target (VM o local)
+        Maquina victima para pruebas
+
+========================================================================
+DONDE EJECUTAR CADA ARCHIVO:
+========================================================================
+
+ARCHIVO                          DONDE SE EJECUTA
+-------------------------------  ----------------------------------------
+01-instalar-virtualbox.ps1       PowerShell como Admin en Windows HOST
+02-crear-vm-kali.ps1             PowerShell como Admin en Windows HOST  
+03-dentro-kali-setup.sh          Terminal DENTRO de Kali Linux (VM)
+04-docker-compose.yml            PowerShell en Windows (si tienes Docker)
+05-docker-setup.sh               Terminal DENTRO del contenedor Docker
+06-alternativas-modernas.sh      Terminal DENTRO de Kali Linux
+07-generar-payload-ejemplo.sh    Terminal DENTRO de Kali Linux
+08-windows-victima-config.ps1    PowerShell como Admin en VM Victima
+
+========================================================================
+COMO VER LOS RESULTADOS:
+========================================================================
+
+- Todos los .sh generan LOGS automaticamente en /tmp/fatrat-lab/
+- Todos los .ps1 generan LOGS en C:\fatrat-lab-logs\
+- Los payloads generados se guardan en: output/ (cada script indica ruta)
+- Para ver en tiempo real:  tail -f /tmp/fatrat-lab/*.log
+- Resumen final:            cat /tmp/fatrat-lab/resumen-final.txt
+
+========================================================================
+FLUJO RECOMENDADO (haz en orden):
+========================================================================
+
+Paso 1: [Windows] Ejecutar 01-instalar-virtualbox.ps1
+Paso 2: [Windows] Ejecutar 02-crear-vm-kali.ps1
+Paso 3: [Kali VM] Ejecutar 03-dentro-kali-setup.sh
+Paso 4: [Kali VM] Ejecutar 07-generar-payload-ejemplo.sh (demo)
+Paso 5: [Kali VM] Ejecutar 06-alternativas-modernas.sh (opcional)
+
+SI USAS DOCKER (alternativa a VM):
+Paso D1: [Windows] docker-compose -f 04-docker-compose.yml up -d
+Paso D2: [Windows] docker exec -it fatrat-container bash
+Paso D3: [Docker]  bash /scripts/05-docker-setup.sh
+Paso D4: [Docker]  bash /scripts/07-generar-payload-ejemplo.sh
+
+========================================================================

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Diagnostic Control Center</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">Local diagnostic suite</p>
+        <h1>PC Diagnostic</h1>
+        <p class="muted">Monitoreo, analisis y acciones correctivas para Windows.</p>
+      </div>
+      <nav class="nav">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#performance">Rendimiento</a>
+        <a href="#storage">Almacenamiento</a>
+        <a href="#security">Seguridad</a>
+        <a href="#system">Sistema</a>
+        <a href="#history">Historial</a>
+        <a href="/comparativa.html">Comparativa</a>
+      </nav>
+      <div class="sidebar-actions">
+        <button id="refreshSnapshotBtn" class="primary">Actualizar analisis</button>
+        <button id="captureBaselineBtn">Capturar antes</button>
+        <a class="button-link" href="/api/export/report.html">Exportar HTML</a>
+        <button id="printPdfBtn">Exportar PDF</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section id="dashboard" class="hero card">
+        <div>
+          <p class="eyebrow">Estado general</p>
+          <h2>Panel en tiempo real</h2>
+          <p class="muted">WebSocket activo para CPU, RAM, disco y red. Usa "Capturar antes" para comparar resultados luego de aplicar comandos.</p>
+        </div>
+        <div class="hero-actions">
+          <span id="wsStatus" class="pill info">Conectando...</span>
+          <span id="generatedAt" class="pill">Sin datos</span>
+        </div>
+      </section>
+
+      <section class="gauges-grid">
+        <article class="gauge-card card">
+          <h3>CPU</h3>
+          <div class="gauge" id="cpuGauge"><span>0%</span></div>
+          <p id="cpuMeta" class="muted">Carga actual</p>
+          <canvas id="cpuChart" height="120"></canvas>
+        </article>
+        <article class="gauge-card card">
+          <h3>RAM</h3>
+          <div class="gauge" id="ramGauge"><span>0%</span></div>
+          <p id="ramMeta" class="muted">Uso actual</p>
+          <canvas id="ramChart" height="120"></canvas>
+        </article>
+        <article class="gauge-card card">
+          <h3>Disco</h3>
+          <div class="metric-stack">
+            <strong id="diskRead">0 MB/s</strong>
+            <span class="muted">Lectura</span>
+            <strong id="diskWrite">0 MB/s</strong>
+            <span class="muted">Escritura</span>
+          </div>
+          <canvas id="diskChart" height="120"></canvas>
+        </article>
+        <article class="gauge-card card">
+          <h3>Red</h3>
+          <div class="metric-stack">
+            <strong id="netDown">0 MB/s</strong>
+            <span class="muted">Descarga</span>
+            <strong id="netUp">0 MB/s</strong>
+            <span class="muted">Subida</span>
+          </div>
+          <canvas id="netChart" height="120"></canvas>
+        </article>
+      </section>
+
+      <section id="performance" class="grid-2">
+        <article class="card">
+          <div class="section-header">
+            <h2>Rendimiento</h2>
+            <span id="healthBadge" class="pill">Analizando</span>
+          </div>
+          <div id="performanceSummary" class="definition-grid"></div>
+          <h3>Procesos con mayor uso de RAM</h3>
+          <div class="table-wrap"><table><thead><tr><th>Proceso</th><th>PID</th><th>RAM MB</th><th>CPU %</th></tr></thead><tbody id="topProcessesBody"></tbody></table></div>
+        </article>
+
+        <article class="card">
+          <div class="section-header">
+            <h2>Comparativa antes y despues</h2>
+            <span class="pill info">Baseline</span>
+          </div>
+          <div id="baselinePanel" class="baseline-panel muted">Aun no has capturado una linea base.</div>
+        </article>
+      </section>
+
+      <section id="storage" class="grid-2">
+        <article class="card">
+          <h2>Almacenamiento</h2>
+          <div id="drivesGrid" class="drive-grid"></div>
+          <h3>Fragmentacion</h3>
+          <div id="fragmentationList" class="stack-list"></div>
+        </article>
+        <article class="card">
+          <h2>Archivos grandes</h2>
+          <p class="muted">Se revisan carpetas del perfil de usuario con profundidad limitada para evitar bloqueos largos.</p>
+          <div class="table-wrap"><table><thead><tr><th>Archivo</th><th>Tamano GB</th></tr></thead><tbody id="largeFilesBody"></tbody></table></div>
+        </article>
+      </section>
+
+      <section id="security" class="grid-2">
+        <article class="card">
+          <h2>Seguridad y red</h2>
+          <div id="securitySummary" class="definition-grid"></div>
+          <h3>Procesos sospechosos</h3>
+          <div id="suspiciousList" class="stack-list"></div>
+        </article>
+        <article class="card">
+          <h2>Puertos y conexiones</h2>
+          <div class="table-wrap"><table><thead><tr><th>Local</th><th>Remoto</th><th>PID</th></tr></thead><tbody id="connectionsBody"></tbody></table></div>
+        </article>
+      </section>
+
+      <section id="system" class="grid-2">
+        <article class="card">
+          <h2>Informacion del sistema</h2>
+          <div id="systemSummary" class="definition-grid"></div>
+        </article>
+        <article class="card">
+          <h2>Drivers potencialmente antiguos</h2>
+          <div class="table-wrap"><table><thead><tr><th>Dispositivo</th><th>Version</th><th>Fecha</th><th>Antiguedad</th></tr></thead><tbody id="driversBody"></tbody></table></div>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="section-header">
+          <h2>Diagnosticos y soluciones</h2>
+          <span class="pill warn">PowerShell/CMD</span>
+        </div>
+        <div id="diagnosticsList" class="diagnostics-list"></div>
+      </section>
+
+      <section id="history" class="grid-2">
+        <article class="card">
+          <h2>Registrar accion aplicada</h2>
+          <form id="historyForm" class="history-form">
+            <input name="note" placeholder="Ej. Cerrado proceso pesado o limpieza temporal" required />
+            <input name="command" placeholder="Comando ejecutado" required />
+            <input name="category" placeholder="Categoria" value="manual" />
+            <select name="urgency">
+              <option value="critico">critico</option>
+              <option value="moderado" selected>moderado</option>
+              <option value="informativo">informativo</option>
+            </select>
+            <button class="primary" type="submit">Guardar en historial</button>
+          </form>
+        </article>
+        <article class="card">
+          <h2>Historial de cambios y mejoras</h2>
+          <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Categoria</th><th>Urgencia</th><th>Nota</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

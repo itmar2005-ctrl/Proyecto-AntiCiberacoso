@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # ================================================================
+  # SERVICIO 1: TheFatRat en contenedor Kali
+  # ================================================================
+  fatrat:
+    build:
+      context: .
+      dockerfile: Dockerfile.fatrat
+    container_name: fatrat-container
+    network_mode: host
+    volumes:
+      - ./output:/output                    # Payloads generados
+      - ./scripts:/scripts:ro               # Scripts de setup
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro    # Para GUI (opcional)
+    environment:
+      - DISPLAY=${DISPLAY:-:0}              # Para GUI (opcional)
+      - HOME=/root
+    stdin_open: true
+    tty: true
+    working_dir: /opt/TheFatRat
+    command: ["bash"]
+
+  # ================================================================
+  # SERVICIO 2: Metasploit listener separado
+  # ================================================================
+  msf-listener:
+    image: metasploitframework/metasploit-framework:latest
+    container_name: msf-listener
+    network_mode: host
+    volumes:
+      - ./output:/output
+      - ./scripts/listener.rc:/listener.rc:ro
+    stdin_open: true
+    tty: true
+    command: >
+      bash -c "sleep 5 && msfconsole -q -r /listener.rc"
+    profiles:
+      - listener
+    depends_on:
+      - fatrat
+
+networks:
+  default:
+    driver: bridge

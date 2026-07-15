@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Scripts de Protección para Navegadores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card h2 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 span {
+            font-size: 1.5em;
+        }
+        
+        .test-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .test-section h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0,212,255,0.3);
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,212,255,0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,107,107,0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,255,136,0.4);
+        }
+        
+        .output {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #00ff88;
+        }
+        
+        .output.error {
+            color: #ff6b6b;
+        }
+        
+        .output.warning {
+            color: #ffaa00;
+        }
+        
+        .dangerous-input {
+            border-color: #ff6b6b !important;
+        }
+        
+        .safe-input {
+            border-color: #00ff88 !important;
+        }
+        
+        .info-box {
+            background: rgba(0,212,255,0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: rgba(255,170,0,0.1);
+            border-left: 4px solid #ffaa00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status-active {
+            background: #00ff88;
+            color: #000;
+        }
+        
+        .status-inactive {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .test-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .test-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .payload-btn {
+            padding: 8px 15px;
+            font-size: 12px;
+            background: rgba(255,107,107,0.2);
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payload-btn:hover {
+            background: rgba(255,107,107,0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Demo: Scripts de Protección</h1>
+        <p class="subtitle">Prueba interactiva de los 3 scripts de seguridad</p>
+        
+        <!-- Estado de Protecciones -->
+        <div class="card">
+            <h2><span>📊</span> Estado de Protecciones</h2>
+            <ul class="test-list">
+                <li>
+                    XSS Protector
+                    <span class="status-badge status-active" id="xss-status">Activo</span>
+                </li>
+                <li>
+                    Clickjack Protector
+                    <span class="status-badge status-active" id="clickjack-status">Activo</span>
+                </li>
+                <li>
+                    CSP + Network Monitor
+                    <span class="status-badge status-active" id="csp-status">Activo</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Test XSS -->
+        <div class="card">
+            <h2><span>🔒</span> Test XSS (Cross-Site Scripting)</h2>
+            <p>Intenta injectar código JavaScript malicioso. El script lo bloqueará.</p>
+            
+            <div class="test-section">
+                <h3>🎯 Inyectar Payload XSS:</h3>
+                <input type="text" id="xss-input" placeholder="Escribe aquí un payload XSS...">
+                <button class="btn-danger" onclick="testXSS()">Probar XSS</button>
+                <button class="btn-primary" onclick="testSafeInput()">Probar Input Seguro</button>
+                
+                <div class="info-box">
+                    <strong>💡 Payloads comunes para probar:</strong><br>
+                    <code id="payload-display" style="color: #ff6b6b;"></code>
+                </div>
+                
+                <button class="payload-btn" onclick="loadPayload(0)">Payload 1</button>
+                <button class="payload-btn" onclick="loadPayload(1)">Payload 2</button>
+                <button class="payload-btn" onclick="loadPayload(2)">Payload 3</button>
+                <button class="payload-btn" onclick="loadPayload(3)">Payload 4</button>
+            </div>
+            
+            <div class="test-section">
+                <h3>📤 Mostrar Contenido (con sanitización):</h3>
+                <div id="xss-output" class="output"></div>
+            </div>
+        </div>
+
+        <!-- Test Clickjacking -->
+        <div class="card">
+            <h2><span>🛡️</span> Test Clickjacking</h2>
+            <p>Verifica si tu navegador puede ser embebido en un iframe.</p>
+            
+            <div class="test-section">
+                <h3>🔍 Verificar Situación:</h3>
+                <div id="clickjack-info" class="output"></div>
+                
+                <br>
+                <button class="btn-primary" onclick="checkClickjack()">Verificar Estado</button>
+                <button class="btn-success" onclick="testFrameBust()">Forzar Frame Bust (romper iframe)</button>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Nota:</strong> El frame-busting solo funciona si la página está 
+                siendo embebida. Si la ves directamente, mostrará que no está en un frame.
+            </div>
+        </div>
+
+        <!-- Test CSP y Network -->
+        <div class="card">
+            <h2><span>🌐</span> Test CSP y Monitoreo de Red</h2>
+            <p>Monitorea las peticiones de red y violações de Content Security Policy.</p>
+            
+            <div class="test-section">
+                <h3>📡 Generar Peticiones de Red:</h3>
+                <button class="btn-primary" onclick="testFetch()">Probar Fetch (GET)</button>
+                <button class="btn-primary" onclick="testFetchPost()">Probar Fetch (POST)</button>
+                <button class="btn-primary" onclick="testXHR()">Probar XMLHttpRequest</button>
+                <button class="btn-primary" onclick="testWebSocket()">Probar WebSocket</button>
+                
+                <div id="network-output" class="output"></div>
+            </div>
+            
+            <div class="test-section">
+                <h3>🔒 Probar CSP (intentar violar):</h3>
+                <button class="btn-danger" onclick="testCSVViolation()">Intentar Violar CSP (inline script)</button>
+                <button class="btn-danger" onclick="testCSPExternal()">Intentar Cargar Recurso Externo</button>
+                <div id="csp-output" class="output"></div>
+            </div>
+        </div>
+
+        <!-- Test Cookies y Storage -->
+        <div class="card">
+            <h2><span>🍪</span> Test Cookies y Storage</h2>
+            <p>Verifica la protección de datos sensibles.</p>
+            
+            <div class="test-section">
+                <h3>💾 Probar Almacenamiento:</h3>
+                <button class="btn-primary" onclick="testLocalStorage()">Guardar en localStorage</button>
+                <button class="btn-primary" onclick="testSensitiveStorage()">Guardar Dato Sensible</button>
+                <button class="btn-primary" onclick="testCookie()">Crear Cookie</button>
+                
+                <div id="storage-output" class="output"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Scripts educativos creados con fines de aprendizaje<br>
+            ⚠️ No usar en producción sin revisión de seguridad
+        </div>
+    </div>
+
+    <!-- Cargar Scripts de Protección -->
+    <script src="1-proteccion-xss.js"></script>
+    <script src="2-proteccion-clickjacking.js"></script>
+    <script src="3-proteccion-csp-network.js"></script>
+    
+    <script>
+        // Payloads XSS para probar
+        const payloads = [
+            '<script>alert("XSS - Código ejecutado!")<\/script>',
+            '<img src=x onerror="alert(\'XSS via onerror!\')">',
+            'javascript:alert("XSS via javascript:")',
+            '<svg onload="alert(\'XSS via SVG!\')">'
+        ];
+        
+        let currentPayloadIndex = 0;
+        
+        // XSS Tests
+        function loadPayload(index) {
+            currentPayloadIndex = index;
+            const input = document.getElementById('xss-input');
+            input.value = payloads[index];
+            document.getElementById('payload-display').textContent = payloads[index];
+        }
+        
+        function testXSS() {
+            const input = document.getElementById('xss-input');
+            const output = document.getElementById('xss-output');
+            const value = input.value;
+            
+            output.textContent = '';
+            output.classList.remove('error', 'warning');
+            
+            // Validar con XSSProtector
+            const validation = window.XSSProtector.sanitizeStatic(value);
+            const isValid = window.XSSProtector.sanitizeStatic(value) === value;
+            
+            // Verificar si hay payloads peligrosos
+            const dangerousPatterns = [
+                /<script/i, /onerror/i, /onload/i, 
+                /javascript:/i, /<img/i, /<svg/i
+            ];
+            
+            let hasDanger = false;
+            dangerousPatterns.forEach(pattern => {
+                if (pattern.test(value)) hasDanger = true;
+            });
+            
+            if (hasDanger) {
+                output.classList.add('error');
+                output.textContent = `🚨 PAYLOAD DETECTADO Y BLOQUEADO\n\n`;
+                output.textContent += `Original: ${value}\n`;
+                output.textContent += `Sanitizado: ${validation}\n`;
+                output.textContent += `\n✅ El script XSS Protector convirtió los caracteres`;
+                output.textContent += ` peligrosos (< > " ') en entidades HTML.`;
+                input.classList.add('dangerous-input');
+                input.classList.remove('safe-input');
+            } else {
+                output.classList.add('warning');
+                output.textContent = `✅ Input seguro\n\nValor: ${validation}\n\nNo se detectaron patrones peligrosos.`;
+                input.classList.add('safe-input');
+                input.classList.remove('dangerous-input');
+            }
+        }
+        
+        function testSafeInput() {
+            const input = document.getElementById('xss-input');
+            input.value = 'Hola mundo! Este es un texto seguro sin código malicioso.';
+            testXSS();
+        }
+        
+        // Clickjacking Tests
+        function checkClickjack() {
+            const output = document.getElementById('clickjack-info');
+            
+            const inFrame = self !== top;
+            const hasProtector = typeof window.ClickjackProtector !== 'undefined';
+            
+            output.classList.remove('error', 'warning');
+            
+            output.textContent = `🔍 Estado de Clickjacking:\n`;
+            output.textContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            output.textContent += `• En iframe: ${inFrame ? 'SÍ ⚠️' : 'NO ✅'}\n`;
+            output.textContent += `• Protector activo: ${hasProtector ? 'SÍ ✅' : 'NO'}\n`;
+            output.textContent += `• Dominios permitidos: ${clickjackProtector.allowedDomains.length}\n`;
+            output.textContent += `• Threats detectados: ${clickjackProtector.detectionLog.length}\n`;
+            
+            if (inFrame) {
+                output.classList.add('warning');
+            } else {
+                output.classList.add('warning');
+                output.textContent += `\n\n💡 Para probar clickjacking, embebe esta`;
+                output.textContent += ` página en un iframe desde otro dominio.`;
+            }
+        }
+        
+        function testFrameBust() {
+            if (self !== top) {
+                top.location.href = self.location.href;
+            } else {
+                alert('No estás en un iframe. El frame-busting no tiene efecto.\n\nPara probarlo, embebe esta página en un iframe.');
+            }
+        }
+        
+        // Network Tests
+        function testFetch() {
+            const output = document.getElementById('network-output');
+            output.textContent = '⏳ Realizando fetch...\n';
+            output.classList.remove('error', 'warning');
+            
+            fetch('https://jsonplaceholder.typicode.com/todos/1')
+                .then(res => res.json())
+                .then(data => {
+                    output.classList.add('warning');
+                    output.textContent = `✅ Fetch exitoso\n\n`;
+                    output.textContent += `URL: jsonplaceholder.typicode.com\n`;
+                    output.textContent += `Método: GET\n`;
+                    output.textContent += `Respuesta: ${JSON.stringify(data, null, 2).substring(0, 200)}...\n`;
+                    output.textContent += `\n📊 Revisa la consola para ver el monitoreo de red.`;
+                })
+                .catch(err => {
+                    output.classList.add('error');
+                    output.textContent = `❌ Error: ${err.message}`;
+                });
+        }
+        
+        function testFetchPost() {
+            const output = document.getElementById('network-output');
+            output.textContent = '⏳ Realizando POST...\n';
+            
+            fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                body: JSON.stringify({ title: 'Test', body: 'Content' }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    output.textContent = `✅ POST exitoso\n\n`;
+                    output.textContent += `URL: jsonplaceholder.typicode.com/posts\n`;
+                    output.textContent += `Método: POST\n`;
+                    output.textContent += `Body enviado: {"title":"Test","body":"Content"}\n`;
+                    output.textContent += `ID creado: ${data.id}`;
+                })
+                .catch(err => {
+                    output.classList.add('error');
+                    output.textContent = `❌ Error: ${err.message}`;
+                });
+        }
+        
+        function testXHR() {
+            const output = document.getElementById('network-output');
+            output.textContent = '⏳ Realizando XMLHttpRequest...\n';
+            
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://jsonplaceholder.typicode.com/users/1');
+            xhr.onload = () => {
+                const data = JSON.parse(xhr.responseText);
+                output.textContent = `✅ XMLHttpRequest exitoso\n\n`;
+                output.textContent += `URL: jsonplaceholder.typicode.com/users/1\n`;
+                output.textContent += `Usuario: ${data.name}\n`;
+                output.textContent += `Email: ${data.email}`;
+            };
+            xhr.onerror = () => {
+                output.classList.add('error');
+                output.textContent = `❌ Error de red`;
+            };
+            xhr.send();
+        }
+        
+        function testWebSocket() {
+            const output = document.getElementById('network-output');
+            output.textContent = '⚠️ Intentando WebSocket...\n';
+            output.textContent += '(Los WebSockets están siendo monitoreados)';
+            
+            try {
+                const ws = new WebSocket('wss://echo.websocket.org');
+                ws.onopen = () => {
+                    output.textContent += `\n\n✅ WebSocket conectado: wss://echo.websocket.org\n`;
+                    output.textContent += `El NetworkMonitor registró esta conexión.`;
+                    ws.close();
+                };
+                ws.onerror = () => {
+                    output.textContent += `\n❌ WebSocket rechazado (posible bloqueo)`;
+                };
+            } catch (e) {
+                output.textContent += `\n❌ Error: ${e.message}`;
+            }
+        }
+        
+        // CSP Tests
+        function testCSVViolation() {
+            const output = document.getElementById('csp-output');
+            output.textContent = '⏳ Intentando violar CSP...\n';
+            output.textContent += 'Creando script inline dinámico...';
+            
+            setTimeout(() => {
+                try {
+                    const script = document.createElement('script');
+                    script.textContent = 'alert("CSP: Este script debería ser bloqueado")';
+                    document.body.appendChild(script);
+                    
+                    output.textContent += `\n❌ Script ejecutado (CSP no lo bloqueó)`;
+                    output.textContent += `\n\n💡 El CSP debería bloquear scripts inline.`;
+                } catch (e) {
+                    output.textContent += `\n✅ CSP bloqueó el script: ${e.message}`;
+                }
+                
+                setTimeout(() => {
+                    output.textContent += `\n\n📊 Revisa la consola (F12) para ver`;
+                    output.textContent += ` si hay eventos de violación de CSP.`;
+                }, 500);
+            }, 100);
+        }
+        
+        function testCSPExternal() {
+            const output = document.getElementById('csp-output');
+            output.textContent = '⏳ Intentando cargar recurso externo...\n';
+            
+            const img = document.createElement('img');
+            img.src = 'https://picsum.photos/10/10';
+            img.onload = () => {
+                output.textContent = `✅ Imagen cargada\n`;
+                output.textContent += `Si ves la imagen, el CSP permitió img-src https:`;
+            };
+            img.onerror = () => {
+                output.textContent = `❌ Imagen bloqueada por CSP`;
+            };
+            document.body.appendChild(img);
+        }
+        
+        // Storage Tests
+        function testLocalStorage() {
+            const output = document.getElementById('storage-output');
+            try {
+                localStorage.setItem('test', 'Hola desde localStorage');
+                output.classList.add('warning');
+                output.textContent = `✅ Dato guardado en localStorage\n\n`;
+                output.textContent += `Clave: test\n`;
+                output.textContent += `Valor: Hola desde localStorage\n\n`;
+                output.textContent += `💡 Revisa la consola para ver si hay advertencias.`;
+            } catch (e) {
+                output.classList.add('error');
+                output.textContent = `❌ Error: ${e.message}`;
+            }
+        }
+        
+        function testSensitiveStorage() {
+            const output = document.getElementById('storage-output');
+            output.classList.add('warning');
+            output.textContent = `⚠️ Intentando guardar dato sensible...\n\n`;
+            
+            localStorage.setItem('password_usuario', 'miPassword123');
+            
+            output.textContent += `Clave: password_usuario\n`;
+            output.textContent += `Valor: miPassword123\n\n`;
+            output.textContent += `🚨 El protector de storage mostró una advertencia\n`;
+            output.textContent += `   porque la clave contiene "password".\n\n`;
+            output.textContent += `📌 Se recomienda NO almacenar contraseñas en localStorage.`;
+        }
+        
+        function testCookie() {
+            const output = document.getElementById('storage-output');
+            try {
+                document.cookie = 'test_cookie=valor_test; max-age=3600';
+                output.classList.add('warning');
+                output.textContent = `✅ Cookie creada\n\n`;
+                output.textContent += `Cookie: test_cookie=valor_test\n`;
+                output.textContent += `Flags aplicados: Secure, SameSite\n\n`;
+                output.textContent += `💡 Revisa las cookies en DevTools > Application > Cookies`;
+            } catch (e) {
+                output.classList.add('error');
+                output.textContent = `❌ Error: ${e.message}`;
+            }
+        }
+        
+        // Inicializar
+        console.clear();
+        console.log('%c🛡️ DEMO DE SCRIPTS DE PROTECCIÓN', 'font-size: 20px; color: #00d4ff; font-weight: bold;');
+        console.log('%cTodos los scripts de protección están activos', 'color: #00ff88;');
+        
+        checkClickjack();
+    </script>
+</body>
+</html>

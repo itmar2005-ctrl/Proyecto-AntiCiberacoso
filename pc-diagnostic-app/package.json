@@ -1,0 +1,22 @@
+{
+  "name": "pc-diagnostic-app",
+  "version": "1.0.0",
+  "description": "Sistema web local de diagnostico integral para PC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "diagnostico",
+    "pc",
+    "monitor",
+    "windows"
+  ],
+  "author": "OpenCode",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "systeminformation": "^5.27.11",
+    "ws": "^8.18.3"
+  }
+}

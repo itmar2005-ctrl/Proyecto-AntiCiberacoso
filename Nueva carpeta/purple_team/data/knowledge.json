@@ -1,0 +1,39 @@
+{
+  "waf": {
+    "description": "Web Application Firewall - protege aplicaciones web contra ataques",
+    "types": ["Cloudflare WAF", "ModSecurity", "AWS WAF", "Azure WAF", "Fastly WAF"],
+    "common_attacks": ["SQLi", "XSS", "CSRF", "LFI", "RFI", "RCE", "SSRF", "XXE", "Path Traversal", "Command Injection"]
+  },
+  "purple_team": {
+    "description": "Equipo de seguridad que combina red team (ataque) y blue team (defensa) para mejorar la postura de seguridad",
+    "tools": ["ntopng", "Wireshark", "Metasploit", "Burp Suite", "Nmap", "BloodHound", "Cobalt Strike", "Sliver", "Velociraptor", "YARA"]
+  },
+  "network": {
+    "protocols": ["TCP", "UDP", "ICMP", "ARP", "DNS", "HTTP/HTTPS", "TLS", "SSH", "SMB", "FTP", "SMTP", "DHCP"],
+    "concepts": {
+      "dpi": "Deep Packet Inspection - analiza el contenido completo del paquete, no solo las cabeceras",
+      "netflow": "Protocolo de Cisco para monitoreo de flujos de red, exporta metadatos de conexiones",
+      "pcap": "Packet Capture - formato estandar para capturar paquetes de red"
+    }
+  },
+  "threats": {
+    "types": ["Malware", "Ransomware", "Phishing", "DDoS", "Man-in-the-Middle", "Zero-day", "APT", "Insider Threat"],
+    "indicators": ["IP maliciosa", "Dominio sospechoso", "Hash de archivo", "Patron de trafico anomalo", "Comportamiento de usuario inusual"]
+  },
+  "compliance": {
+    "frameworks": ["ISO 27001", "NIST CSF", "PCI DSS", "GDPR", "SOC 2", "HIPAA"],
+    "controls": ["Access Control", "Audit Logging", "Encryption at Rest", "Encryption in Transit", "Incident Response", "Vulnerability Management"]
+  },
+  "commands": {
+    "scan <ip>": "Escanea una IP o dominio en busca de puertos abiertos",
+    "scan <ip> -p 80,443": "Escanea puertos especificos",
+    "block <ip>": "Bloquea una IP en el WAF de Cloudflare",
+    "monitor": "Muestra estadisticas de trafico de red en tiempo real",
+    "status": "Muestra el estado del sistema y agentes conectados",
+    "report": "Genera un reporte de seguridad con metricas actuales",
+    "waf list": "Lista las reglas WAF configuradas",
+    "waf block <ip>": "Bloquea una IP via WAF",
+    "agent list": "Lista todos los agentes/payloads conectados al C2",
+    "ping <subnet>": "Escanea una subred en busca de hosts activos"
+  }
+}

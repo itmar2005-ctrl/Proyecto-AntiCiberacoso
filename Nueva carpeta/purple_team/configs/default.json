@@ -1,0 +1,68 @@
+{
+  "c2": {
+    "host": "0.0.0.0",
+    "tcp_port": 5555,
+    "udp_port": 5556,
+    "http_port": 8080,
+    "https_port": 8443,
+    "password": "purple-team-2024",
+    "max_attempts": 3,
+    "timeout": 30,
+    "broadcast_interval": 2,
+    "rate_limit": 100,
+    "ssl_cert": "",
+    "ssl_key": ""
+  },
+  "agent": {
+    "auto_discovery": true,
+    "broadcast_listen": true,
+    "reconnect_interval": 5,
+    "max_retries": 20,
+    "jitter": true,
+    "kill_date": "",
+    "encryption": true,
+    "obfuscate": true
+  },
+  "encryption": {
+    "algorithm": "AES-256-GCM",
+    "key_rotation_days": 7,
+    "key_file": "~/.purple_team_key"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/purple_team.log",
+    "max_size_mb": 50,
+    "backup_count": 5,
+    "json_format": false
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "data/purple_team.db"
+  },
+  "api": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 9090,
+    "secret": "",
+    "cors_origins": ["*"]
+  },
+  "chatbot": {
+    "name": "Purple Team AI",
+    "version": "2.0.0",
+    "provider": "local",
+    "model": "default"
+  },
+  "monitoring": {
+    "enabled": true,
+    "pcap_dir": "data/captures",
+    "max_pcap_size_mb": 100,
+    "flow_timeout": 300,
+    "dpi_enabled": true
+  },
+  "waf": {
+    "cloudflare_email": "",
+    "cloudflare_api_key": "",
+    "auto_sync": false,
+    "default_action": "block"
+  }
+}

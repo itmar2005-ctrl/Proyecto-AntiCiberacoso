@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Aprendizaje Automatico: Regresion y Clasificacion</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #222; margin: 28px; }
+    h1, h2, h3 { color: #163a63; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
+    th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
+    th { background: #e9eef7; }
+    pre { white-space: pre-wrap; background: #f4f6fa; padding: 10px; border: 1px solid #cfd8e3; }
+    .cover { text-align: center; border: 2px solid #cfd8e3; padding: 30px; margin-bottom: 28px; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <h1>Aprendizaje Automatico: Regresion y Clasificacion</h1>
+    <p><strong>HOJA DE PRESENTACION</strong></p>
+    <p><strong>Asignatura:</strong> Machine Learning / Inteligencia Artificial</p>
+    <p><strong>Estudiante:</strong> [Tu nombre completo]</p>
+    <p><strong>Docente:</strong> [Nombre del docente]</p>
+    <p><strong>Institucion:</strong> [Nombre de la institucion]</p>
+    <p><strong>Programa:</strong> [Nombre del programa]</p>
+    <p><strong>Fecha:</strong> [Ciudad, dia mes ano]</p>
+  </div>
+
+  <h2>Introduccion</h2>
+  <p>El aprendizaje automatico, conocido como Machine Learning (ML), es una rama de la inteligencia artificial que permite a las computadoras aprender patrones a partir de los datos y mejorar su desempeno sin ser programadas de manera explicita para cada situacion. Su importancia ha crecido de forma acelerada debido a la disponibilidad de grandes volumentes de datos y al aumento de la capacidad computacional.</p>
+  <p>Este trabajo presenta una revision organizada de los fundamentos del ML, con enfasis en algoritmos de regresion y clasificacion, su funcionamiento, aplicaciones y usos practicos. Ademas, se incluye una explicacion conceptual de herramientas ampliamente utilizadas en analisis de datos, como Pandas y Matplotlib.</p>
+
+  <h2>1. Introduccion al Machine Learning (ML)</h2>
+  <h3>1.1. Que es el aprendizaje automatico</h3>
+  <p>El aprendizaje automatico es el conjunto de tecnicas que permiten construir modelos capaces de identificar relaciones en los datos y realizar predicciones o clasificaciones. En lugar de programar reglas fijas, el sistema aprende a partir de ejemplos historicos.</p>
+  <p>Un algoritmo de ML recibe datos de entrada, detecta patrones y genera un modelo que luego puede usarse para predecir resultados sobre informacion nueva.</p>
+  <h3>1.2. Principales aplicaciones</h3>
+  <table>
+    <tr><th>Sector</th><th>Aplicacion</th></tr>
+    <tr><td>Salud</td><td>Diagnostico asistido, prediccion de enfermedades, analisis de imagenes medicas</td></tr>
+    <tr><td>Finanzas</td><td>Deteccion de fraude, evaluacion de riesgo crediticio, deteccion de clientes morosos</td></tr>
+    <tr><td>Comercio electronico</td><td>Recomendaciones de productos, segmentacion de clientes, prediccion de demanda</td></tr>
+    <tr><td>Industria</td><td>Mantenimiento predictivo, control de calidad, automatizacion de procesos</td></tr>
+    <tr><td>Transporte</td><td>Vehiculos autonomos, optimizacion de rutas, prediccion de trafico</td></tr>
+    <tr><td>Vida cotidiana</td><td>Asistentes virtuales, filtros de spam, reconocimiento facial, traduccion automatica</td></tr>
+  </table>
+  <h3>1.3. Tipos de aprendizaje</h3>
+  <p><strong>Supervisado:</strong> aprende con datos etiquetados y se usa para regresion y clasificacion.</p>
+  <p><strong>No supervisado:</strong> trabaja con datos sin etiquetas y descubre patrones o grupos.</p>
+  <p><strong>Por refuerzo:</strong> aprende por ensayo y error mediante recompensas y penalizaciones.</p>
+  <pre>APRENDIZAJE AUTOMATICO
+|
+|-- Supervisado
+|   |-- Entrada + etiqueta
+|   `-- Prediccion
+|-- No supervisado
+|   |-- Solo entrada
+|   `-- Descubrimiento de patrones
+`-- Por refuerzo
+    |-- Agente + entorno
+    `-- Recompensas</pre>
+
+  <h2>2. Algoritmos de Regresion</h2>
+  <p>Son tecnicas de aprendizaje supervisado que se emplean para predecir un valor continuo, como precio, temperatura, ventas o produccion.</p>
+  <p>Se utilizan en economia, ingenieria, salud, ciencias ambientales y negocios.</p>
+  <pre>Variables de entrada (X) ---> Modelo de regresion ---> Valor numerico predicho (Y)</pre>
+  <p><strong>Regresion lineal simple:</strong> y = mx + b</p>
+  <p><strong>Regresion lineal multiple:</strong> y = b0 + b1x1 + b2x2 + ... + bnxn</p>
+  <p><strong>Regresion polinomica:</strong> modela relaciones no lineales.</p>
+  <p><strong>SVM para regresion:</strong> busca una funcion dentro de un margen de tolerancia.</p>
+  <p><strong>Arboles de decision para regresion:</strong> dividen el espacio de entrada en regiones.</p>
+  <p><strong>Random Forest Regressor:</strong> combina varios arboles y promedia sus predicciones.</p>
+  <table>
+    <tr><th>Algoritmo</th><th>Ventaja</th><th>Limitacion</th><th>Uso</th></tr>
+    <tr><td>Regresion lineal simple</td><td>Facil interpretacion</td><td>Solo lineal</td><td>Prediccion basica</td></tr>
+    <tr><td>Regresion lineal multiple</td><td>Varias variables</td><td>Multicolinealidad</td><td>Analisis economico</td></tr>
+    <tr><td>Regresion polinomica</td><td>No linealidad</td><td>Sobreajuste</td><td>Series con curvatura</td></tr>
+    <tr><td>SVR</td><td>Robusto</td><td>Ajuste fino</td><td>Datos con ruido</td></tr>
+    <tr><td>Arbol de decision</td><td>Interpretable</td><td>Puede sobreajustar</td><td>Reglas claras</td></tr>
+    <tr><td>Random Forest Regressor</td><td>Generaliza mejor</td><td>Menos interpretable</td><td>Prediccion estable</td></tr>
+  </table>
+
+  <h2>3. Problemas de Clasificacion</h2>
+  <p>Un problema de clasificacion asigna una etiqueta a cada observacion dentro de un conjunto de categorias posibles. La salida no es continua, sino discreta.</p>
+  <p><strong>Binaria:</strong> dos clases posibles. <strong>Multiclase:</strong> tres o mas clases.</p>
+  <table>
+    <tr><th>Tipo</th><th>Descripcion</th><th>Ejemplo</th></tr>
+    <tr><td>Binaria</td><td>Dos categorias</td><td>Fraude / No fraude</td></tr>
+    <tr><td>Multiclase</td><td>Tres o mas categorias</td><td>Tipo de flor, reconocimiento de digitos</td></tr>
+  </table>
+  <p>Casos de uso: diagnostico medico, reconocimiento de imagenes, analisis de sentimiento, deteccion de spam, autenticacion biometrica y deteccion de fallas.</p>
+  <pre>Entrada de datos ---> Modelo clasificador ---> Clase predicha
+
+Ejemplo binario:
+[Correo] ---> [Modelo] ---> [Spam / No spam]
+
+Ejemplo multiclase:
+[Imagen] ---> [Modelo] ---> [Gato / Perro / Pajaro]</pre>
+
+  <h2>4. Algoritmos de Clasificacion</h2>
+  <p>Son modelos supervisados que aprenden a distinguir entre categorias a partir de ejemplos etiquetados.</p>
+  <p>Entre los mas usados se encuentran la regresion logistica, SVM, K-NN, Naive Bayes, arboles de decision y bosques aleatorios.</p>
+  <p><strong>Regresion logistica:</strong> calcula la probabilidad de pertenencia a una clase mediante la funcion sigmoide.</p>
+  <p><strong>SVM:</strong> busca el hiperplano que mejor separe las clases maximizando el margen.</p>
+  <p><strong>K-NN:</strong> clasifica segun la clase mayoritaria entre sus vecinos mas cercanos.</p>
+  <p><strong>Naive Bayes:</strong> se basa en el teorema de Bayes y asume independencia condicional entre las variables.</p>
+  <p><strong>Arboles de decision:</strong> dividen los datos en ramas segun reglas; cada hoja representa una clase.</p>
+  <p><strong>Random Forest Classifier:</strong> combina varios arboles de decision y vota por la clase mas probable.</p>
+  <table>
+    <tr><th>Algoritmo</th><th>Ventaja</th><th>Limitacion</th><th>Uso</th></tr>
+    <tr><td>Regresion logistica</td><td>Rapida e interpretable</td><td>No captura relaciones muy complejas</td><td>Riesgo, marketing</td></tr>
+    <tr><td>SVM</td><td>Buen margen de separacion</td><td>Costosa con grandes volumentes de datos</td><td>Texto e imagenes</td></tr>
+    <tr><td>K-NN</td><td>Muy sencillo</td><td>Lento al predecir</td><td>Clasificacion basica</td></tr>
+    <tr><td>Naive Bayes</td><td>Eficiente y rapido</td><td>Independencia fuerte</td><td>Spam y texto</td></tr>
+    <tr><td>Arbol de decision</td><td>Facil de entender</td><td>Puede sobreajustar</td><td>Diagnostico y reglas</td></tr>
+    <tr><td>Random Forest Classifier</td><td>Alta precision</td><td>Menor interpretabilidad</td><td>Clasificacion general</td></tr>
+  </table>
+
+  <h2>5. Aplicacion con herramientas computacionales</h2>
+  <p><strong>Google Colab:</strong> entorno en la nube para ejecutar notebooks de Python.</p>
+  <p><strong>Pandas:</strong> facilita la carga, limpieza y analisis de datos tabulares.</p>
+  <p><strong>Matplotlib:</strong> permite crear graficas para visualizar tendencias y resultados de modelos.</p>
+
+  <h2>6. Conclusiones</h2>
+  <p>El aprendizaje automatico permite construir modelos que aprenden de los datos y automatizan tareas de prediccion y clasificacion. La regresion se enfoca en valores continuos y la clasificacion en categorias discretas.</p>
+  <p>La regresion lineal destaca por su simplicidad, mientras que Random Forest y SVM ofrecen mayor flexibilidad en escenarios complejos. En clasificacion, la regresion logistica, Naive Bayes, K-NN y los arboles de decision constituyen opciones fundamentales por su eficacia.</p>
+  <p>Google Colab, Pandas y Matplotlib complementan el aprendizaje teorico y permiten trabajar con datos reales de manera practica.</p>
+
+  <h2>Bibliografia</h2>
+  <p>Bishop, C. M. (2006). <em>Pattern recognition and machine learning</em>. Springer.</p>
+  <p>Géron, A. (2022). <em>Hands-on machine learning with Scikit-Learn, Keras, and TensorFlow</em> (3rd ed.). O'Reilly Media.</p>
+  <p>Hastie, T., Tibshirani, R., & Friedman, J. (2009). <em>The elements of statistical learning</em> (2nd ed.). Springer.</p>
+  <p>James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). <em>An introduction to statistical learning</em>. Springer.</p>
+  <p>Murphy, K. P. (2022). <em>Probabilistic machine learning: An introduction</em>. The MIT Press.</p>
+  <p>Russell, S. J., & Norvig, P. (2021). <em>Artificial intelligence: A modern approach</em> (4th ed.). Pearson.</p>
+  <p>Scikit-learn developers. (n.d.). <em>Scikit-learn user guide</em>. https://scikit-learn.org/stable/user_guide.html</p>
+  <p>Google. (n.d.). <em>Colab research</em>. https://colab.research.google.com/</p>
+</body>
+</html>

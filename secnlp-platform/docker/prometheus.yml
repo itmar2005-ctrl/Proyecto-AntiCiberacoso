@@ -1,0 +1,15 @@
+# Configuración de Prometheus para SecNLP Platform
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "secnlp-engine"
+    static_configs:
+      - targets: ["moderation-engine:8000"]
+    metrics_path: "/metrics"
+    scheme: http
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

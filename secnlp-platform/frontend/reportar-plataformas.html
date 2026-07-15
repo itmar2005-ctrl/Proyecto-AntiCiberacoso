@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cómo Reportar Ciberacoso | SecNLP</title>
+<link rel="stylesheet" href="/static/classifier.css">
+<style>
+:root{--bg:#080818;--bg2:#0d0d28;--bg3:#14143a;--bg4:#1c1c4a;--border:#2a2a5a;--text:#e0e8ff;--text2:#8899cc;--blue:#4dabf7;--green:#51cf66;--red:#ff6b6b;--yellow:#fcc419;--radius:10px;--radius-lg:14px}
+.platform-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px;margin-bottom:20px;transition:border-color .3s}
+.platform-card:hover{border-color:var(--blue)}
+.platform-card .pf-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.platform-card .pf-logo{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.platform-card .pf-name{font-size:20px;font-weight:700}
+.platform-card .pf-steps{counter-reset:step}
+.platform-card .pf-step{counter-increment:step;padding:12px 0 12px 40px;position:relative;font-size:14px;color:var(--text2);line-height:1.6;border-bottom:1px solid var(--border)}
+.platform-card .pf-step:last-child{border-bottom:none}
+.platform-card .pf-step::before{content:counter(step);position:absolute;left:0;top:12px;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.platform-card .pf-step strong{color:var(--text)}
+.platform-card .pf-step .screenshot{border:1px solid var(--border);background:var(--bg2);border-radius:6px;padding:4px 10px;font-size:11px;display:inline-block;margin-top:4px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.platform-card .pf-step .icon-inline{font-size:16px;margin-right:4px}
+.tip-box{background:rgba(77,171,247,.08);border:1px solid rgba(77,171,247,.2);border-radius:var(--radius);padding:16px;margin:16px 0;border-left:4px solid var(--blue)}
+.tip-box strong{color:var(--blue)}
+.tip-box.red{border-left-color:var(--red);background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2)}
+.tip-box.red strong{color:var(--red)}
+.danger-banner{background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,107,107,.05));border:1px solid rgba(255,107,107,.3);border-radius:var(--radius-lg);padding:24px;text-align:center;margin-bottom:20px}
+.danger-banner h3{color:var(--red);font-size:20px;font-weight:700;margin-bottom:8px}
+.danger-banner p{color:var(--text2);font-size:14px}
+.emergency-note{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:var(--radius);padding:16px;margin:16px 0;display:flex;align-items:center;gap:16px}
+.emergency-note .emergency-icon{font-size:32px;flex-shrink:0}
+.emergency-note p{font-size:13px;color:var(--text2);line-height:1.6}
+.emergency-note strong{color:var(--red)}
+.pf-img-guide{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:8px;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+<header class="cl-header">
+<div class="cl-header-inner">
+<div class="cl-brand">
+<svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 2L4 8v8c0 7.4 5.1 14.3 12 16 6.9-1.7 12-8.6 12-16V8l-12-6z" fill="none" stroke="#ff6b6b" stroke-width="2.5"/><path d="M12 16l3 3 5-6" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div><h1>SecNLP <span style="color:#ff6b6b">Reportar Ciberacoso</span></h1><span class="cl-subhead">Guía paso a paso para reportar y bloquear en todas las plataformas</span></div>
+</div>
+<nav class="cl-nav"><a href="/">Portal</a><span class="cl-nav-sep">|</span><a href="/classifier">Clasificador</a><span class="cl-nav-sep">|</span><a href="/guia-seguridad">Seguridad</a><span class="cl-nav-sep">|</span><a href="/guia-padres">Padres</a><span class="cl-nav-sep">|</span><a href="/reportar" class="active">Reportar</a></nav>
+</div>
+</header>
+
+<main class="cl-main">
+<div class="cl-hero"><div class="cl-hero-text">
+<h2>🚨 Cómo <span class="grad">Reportar y Bloquear</span> el Ciberacoso</h2>
+<p>Guía detallada paso a paso para reportar usuarios maliciosos y bloquear acosadores en cada plataforma. Sigue las instrucciones al pie de la letra para protegerte a ti y a tus hijos.</p>
+</div></div>
+
+<div class="danger-banner">
+<h3>⚠️ Si hay peligro inmediato, llama al 911 (o 104 en Panamá)</h3>
+<p>Las amenazas de muerte, violencia física o acoso sexual son delitos. No esperes, contacta a las autoridades de inmediato.</p>
+</div>
+
+<div class="tip-box red" style="margin-bottom:20px">
+<strong>📸 Antes de reportar o bloquear:</strong> Toma capturas de pantalla de TODOS los mensajes, comentarios o publicaciones ofensivas. Guarda las fechas, horas y URLs. Esta evidencia es crucial si necesitas escalar el caso a las autoridades o a la escuela.
+</div>
+
+<!-- INSTAGRAM -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:linear-gradient(135deg,#405de6,#5851db,#833ab4,#c13584,#e1306c);color:#fff">📸</div><div class="pf-name">Instagram</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar una publicación o comentario:</strong> Presiona los tres puntos (⋮) en la esquina superior derecha de la publicación → <strong>Reportar</strong> → Selecciona el motivo (Acoso o intimidación, Contenido inapropiado, etc.) → Sigue las instrucciones. <div class="pf-img-guide">📍 Ruta: Publicación → ⋮ → Reportar → Acoso o intimidación</div></div>
+<div class="pf-step"><strong>Reportar un mensaje directo:</strong> Abre el chat → Presiona el nombre del usuario arriba → <strong>Reportar</strong> → Selecciona el motivo. También puedes mantener presionado el mensaje específico y seleccionar "Reportar". <div class="pf-img-guide">📍 Ruta: Chat → Nombre usuario → Reportar</div></div>
+<div class="pf-step"><strong>Bloquear a un usuario:</strong> Ve al perfil del acosador → Presiona los tres puntos (⋮) arriba a la derecha → <strong>Bloquear</strong> → Confirma. También puedes <strong>Restringir</strong> (los comentarios del usuario restringido solo los ve él). <div class="pf-img-guide">📍 Ruta: Perfil → ⋮ → Bloquear</div></div>
+<div class="pf-step"><strong>Configuración de privacidad:</strong> Perfil → ⋮ → Configuración → Privacidad → <strong>Cuenta privada</strong> (activar). También puedes: Desactivar comentarios en publicaciones específicas, ocultar historias a personas específicas, y revisar etiquetas antes de que aparezcan.</div>
+</div></div>
+
+<!-- FACEBOOK -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:#1877f2;color:#fff">👤</div><div class="pf-name">Facebook</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar una publicación o comentario:</strong> Presiona los tres puntos (⋮) en la parte superior derecha de la publicación → <strong>Buscar ayuda o reportar publicación</strong> → Selecciona "Acoso" o "Bullying" → Sigue las instrucciones. <div class="pf-img-guide">📍 Ruta: Publicación → ⋮ → Reportar publicación → Acoso</div></div>
+<div class="pf-step"><strong>Reportar un perfil falso:</strong> Ve al perfil → Presiona ⋮ debajo de la foto de portada → <strong>Buscar ayuda o reportar perfil</strong> → Selecciona "Cuenta falsa" o "Suplantación de identidad".</div>
+<div class="pf-step"><strong>Bloquear a un usuario:</strong> Ve al perfil → Presiona ⋮ → <strong>Bloquear</strong> → Confirma. También puedes desde: Configuración → Bloqueos → Agregar a lista de bloqueados. <div class="pf-img-guide">📍 Ruta: Perfil → ⋮ → Bloquear</div></div>
+<div class="pf-step"><strong>Configuración de seguridad:</strong> Configuración → Seguridad e inicio de sesión → Activar <strong>Autenticación en dos pasos</strong> (2FA). También: Revisa sesiones activas, activa alertas de inicio de sesión no reconocido.</div>
+</div></div>
+
+<!-- TWITTER/X -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:#000;color:#fff">𝕏</div><div class="pf-name">Twitter / X</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar un tweet:</strong> Presiona los tres puntos (⋮) en el tweet → <strong>Reportar tweet</strong> → Selecciona "Es abusivo o dañino" → "Acoso dirigido a mí" o "Acoso dirigido a alguien más". <div class="pf-img-guide">📍 Ruta: Tweet → ⋮ → Reportar → Acoso</div></div>
+<div class="pf-step"><strong>Reportar un mensaje directo:</strong> Abre el DM → Presiona ⋮ → <strong>Reportar mensaje</strong> → Selecciona el motivo.</div>
+<div class="pf-step"><strong>Bloquear a un usuario:</strong> Ve al perfil → Presiona ⋮ → <strong>Bloquear</strong> → Confirma. También puedes <strong>Silenciar</strong> (no ver sus tweets sin que ellos lo sepan) o <strong>Reportar</strong> directamente. <div class="pf-img-guide">📍 Ruta: Perfil → ⋮ → Bloquear</div></div>
+<div class="pf-step"><strong>Configuración de privacidad:</strong> Más → Configuración y privacidad → Privacidad y seguridad → <strong>Proteger tus tweets</strong> (cuenta privada). También: Desactiva la ubicación en tweets, limita quién puede enviarte DMs, silencia palabras específicas.</div>
+</div></div>
+
+<!-- WHATSAPP -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:#25d366;color:#fff">💬</div><div class="pf-name">WhatsApp</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar un contacto o número desconocido:</strong> Abre el chat → Presiona ⋮ (los tres puntos) → <strong>Más</strong> → <strong>Reportar</strong> → Selecciona "Reportar y bloquear" o solo "Reportar". WhatsApp recibirá los últimos mensajes para revisión. <div class="pf-img-guide">📍 Ruta: Chat → ⋮ → Más → Reportar → Reportar y bloquear</div></div>
+<div class="pf-step"><strong>Bloquear a un contacto:</strong> Abre el chat → Presiona ⋮ → <strong>Más</strong> → <strong>Bloquear</strong> → Confirma. También desde: Configuración → Cuenta → Privacidad → Contactos bloqueados → Agregar. <div class="pf-img-guide">📍 Ruta: Chat → ⋮ → Más → Bloquear</div></div>
+<div class="pf-step"><strong>Configuración de privacidad:</strong> Configuración → Cuenta → Privacidad: <strong>Quién puede ver mi foto de perfil</strong> (selecciona "Mis contactos" o "Nadie"), <strong>Última vez</strong> (elige quién la ve), <strong>Confirmaciones de lectura</strong> (desactivar si prefieres), <strong>Llamadas</strong> (silenciar llamadas de números desconocidos).</div>
+</div></div>
+
+<!-- TIKTOK -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:linear-gradient(135deg,#25f4ee,#fe2c55);color:#fff">🎵</div><div class="pf-name">TikTok</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar un video o comentario:</strong> En el video, mantén presionado o presiona ⋮ → <strong>Reportar</strong> → Selecciona "Acoso o bullying" → Sigue las instrucciones. Para comentarios: mantén presionado el comentario → Reportar. <div class="pf-img-guide">📍 Ruta: Video → ⋮ → Reportar → Acoso o bullying</div></div>
+<div class="pf-step"><strong>Reportar un mensaje directo:</strong> Abre el chat → Presiona ⋮ → <strong>Reportar</strong> → Selecciona el motivo.</div>
+<div class="pf-step"><strong>Bloquear a un usuario:</strong> Ve al perfil → Presiona ⋮ (arriba a la derecha) → <strong>Bloquear</strong> → Confirma. También puedes <strong>Restringir</strong> para limitar la interacción sin bloquear completamente. <div class="pf-img-guide">📍 Ruta: Perfil → ⋮ → Bloquear</div></div>
+<div class="pf-step"><strong>Configuración de privacidad:</strong> Perfil → ⋮ → Configuración y privacidad → Privacidad: <strong>Cuenta privada</strong> (activar), <strong>Quién puede enviarte mensajes</strong>, <strong>Quién puede comentar tus videos</strong>, <strong>Filtro de comentarios</strong> (activar filtro de palabras clave y spam).</div>
+</div></div>
+
+<!-- YOUTUBE -->
+<div class="platform-card">
+<div class="pf-header"><div class="pf-logo" style="background:#ff0000;color:#fff">▶️</div><div class="pf-name">YouTube</div></div>
+<div class="pf-steps">
+<div class="pf-step"><strong>Reportar un comentario:</strong> Junto al comentario, presiona los tres puntos (⋮) → <strong>Reportar</strong> → Selecciona "Acoso o bullying" → Envía. <div class="pf-img-guide">📍 Ruta: Comentario → ⋮ → Reportar → Acoso o bullying</div></div>
+<div class="pf-step"><strong>Reportar un video:</strong> Debajo del video, presiona ⋮ → <strong>Reportar</strong> → Selecciona "Contenido dañino o peligroso" → "Acoso o ciberacoso".</div>
+<div class="pf-step"><strong>Bloquear a un usuario en YouTube:</strong> Ve al canal del usuario → Acerca de → Bandera (🚩) → <strong>Bloquear usuario</strong>. También desde: Configuración → Avanzado → Usuarios bloqueados. <div class="pf-img-guide">📍 Ruta: Canal → Acerca de → 🚩 → Bloquear usuario</div></div>
+<div class="pf-step"><strong>Configuración de seguridad:</strong> Configuración → Privacidad: activa <strong>Modo restringido</strong> (filtra contenido potencialmente inapropiado), <strong>Pausar historial</strong>, <strong>Gestionar comentarios</strong> (revisar retenidos, aprobar o eliminar). Para padres: activa <strong>YouTube Kids</strong> o Supervisado por padres.</div>
+</div></div>
+
+<!-- RESUMEN BLOQUEO RÁPIDO -->
+<div class="cl-panel" style="margin-top:24px">
+<div class="cl-panel-header"><h3>⚡ Resumen Rápido: Cómo Bloquear en Cada Red</h3></div>
+<div class="cl-panel-body">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">📸</span><div><strong style="font-size:13px">Instagram</strong><br><span style="font-size:11px;color:var(--text2)">Perfil → ⋮ → Bloquear</span></div></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">👤</span><div><strong style="font-size:13px">Facebook</strong><br><span style="font-size:11px;color:var(--text2)">Perfil → ⋮ → Bloquear</span></div></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">𝕏</span><div><strong style="font-size:13px">Twitter/X</strong><br><span style="font-size:11px;color:var(--text2)">Perfil → ⋮ → Bloquear</span></div></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">💬</span><div><strong style="font-size:13px">WhatsApp</strong><br><span style="font-size:11px;color:var(--text2)">Chat → ⋮ → Más → Bloquear</span></div></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">🎵</span><div><strong style="font-size:13px">TikTok</strong><br><span style="font-size:11px;color:var(--text2)">Perfil → ⋮ → Bloquear</span></div></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px"><span style="font-size:24px">▶️</span><div><strong style="font-size:13px">YouTube</strong><br><span style="font-size:11px;color:var(--text2)">Canal → Acerca de → 🚩 → Bloquear</span></div></div>
+</div>
+</div></div>
+
+<div class="emergency-note">
+<div class="emergency-icon">🆘</div>
+<p><strong>¿Necesitas ayuda ahora?</strong> Si estás siendo víctima de ciberacoso y necesitas apoyo inmediato, llama a la <strong>Línea de Ayuda de Panamá: +507 800-1725</strong> (24/7). Si hay peligro inminente, llama al <strong>911</strong> o <strong>104</strong> (Policía Nacional de Panamá).</p>
+</div>
+
+</main>
+
+<footer class="cl-footer"><p>SecNLP - Guía para Reportar Ciberacoso en Redes Sociales</p>
+<p class="cl-footer-tech">No te calles. Reporta. Bloquea. Busca ayuda. No estás solo.</p></footer>
+</div>
+</body>
+</html>

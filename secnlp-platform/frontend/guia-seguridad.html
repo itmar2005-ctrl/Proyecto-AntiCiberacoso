@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Guía de Seguridad Digital | SecNLP</title>
+<link rel="stylesheet" href="/static/classifier.css">
+<style>
+:root{--bg:#080818;--bg2:#0d0d28;--bg3:#14143a;--bg4:#1c1c4a;--border:#2a2a5a;--text:#e0e8ff;--text2:#8899cc;--blue:#4dabf7;--green:#51cf66;--red:#ff6b6b;--yellow:#fcc419;--radius:10px;--radius-lg:14px}
+.step-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 24px;margin-bottom:16px;transition:border-color .3s;position:relative}
+.step-card:hover{border-color:var(--blue)}
+.step-card h3{font-size:18px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.step-card p{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.step-card ul{list-style:none;padding:0}
+.step-card li{padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.6;display:flex;align-items:flex-start;gap:8px}
+.step-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.step-card li strong{color:var(--text)}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:16px 0}
+.platform-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center}
+.platform-card .logo{font-size:40px;margin-bottom:8px}
+.platform-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.platform-card p{font-size:12px;color:var(--text2)}
+.tip-box{background:rgba(77,171,247,.08);border:1px solid rgba(77,171,247,.2);border-radius:var(--radius);padding:16px;margin:12px 0;border-left:4px solid var(--blue)}
+.tip-box strong{color:var(--blue)}
+.tip-box.warn{border-left-color:var(--yellow);background:rgba(252,196,25,.08);border-color:rgba(252,196,25,.2)}
+.tip-box.warn strong{color:var(--yellow)}
+.tip-box.danger{border-left-color:var(--red);background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2)}
+.tip-box.danger strong{color:var(--red)}
+.platform-logo{width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:8px}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+<header class="cl-header">
+<div class="cl-header-inner">
+<div class="cl-brand">
+<svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 2L4 8v8c0 7.4 5.1 14.3 12 16 6.9-1.7 12-8.6 12-16V8l-12-6z" fill="none" stroke="#4dabf7" stroke-width="2.5"/><path d="M12 16l3 3 5-6" fill="none" stroke="#4dabf7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div><h1>SecNLP <span>Guía de Seguridad Digital</span></h1><span class="cl-subhead">Protégete del ciberacoso con medidas básicas de seguridad</span></div>
+</div>
+<nav class="cl-nav"><a href="/">Portal</a><span class="cl-nav-sep">|</span><a href="/classifier">Clasificador</a><span class="cl-nav-sep">|</span><a href="/guia-seguridad" class="active">Seguridad</a><span class="cl-nav-sep">|</span><a href="/guia-padres">Padres</a><span class="cl-nav-sep">|</span><a href="/reportar">Reportar</a></nav>
+</div>
+</header>
+
+<main class="cl-main">
+<div class="cl-hero"><div class="cl-hero-text">
+<h2>🛡️ Guía de <span class="grad">Seguridad Digital</span></h2>
+<p>Aprende a bloquear acosadores, reportar contenido abusivo, activar la autenticación de dos factores (2FA) y aplicar medidas básicas de protección en todas tus plataformas digitales.</p>
+</div></div>
+
+<div class="cl-panel" style="margin-top:0">
+<div class="cl-panel-header"><h3>🔐 Medidas Básicas de Protección</h3><p>Antes de aprender a bloquear y reportar, asegúrate de tener estas medidas de seguridad activadas.</p></div>
+<div class="cl-panel-body">
+<div class="step-card">
+<h3>🔑 Autenticación de Dos Factores (2FA)</h3>
+<p>El 2FA agrega una capa extra de seguridad a tus cuentas. Incluso si alguien obtiene tu contraseña, no podrá acceder sin el segundo factor.</p>
+<ul>
+<li><strong>Google Authenticator</strong> — App gratuita que genera códigos cada 30 segundos. Funciona sin internet.</li>
+<li><strong>Microsoft Authenticator</strong> — Similar a Google, permite aprobar inicios de sesión con un tap.</li>
+<li><strong>Authy</strong> — Sincroniza tus tokens entre dispositivos. Ideal si cambias de teléfono seguido.</li>
+<li><strong>Claves de seguridad físicas</strong> — Dispositivos USB como YubiKey o Google Titan. La opción más segura.</li>
+<li><strong>Códigos de respaldo</strong> — Guarda los códigos de recuperación en un lugar seguro (no en la nube).</li>
+</ul>
+<div class="tip-box"><strong>💡 Actívalo ya:</strong> Ve a Configuración → Seguridad → Verificación en dos pasos en cada plataforma. WhatsApp, Instagram, Google, Facebook y Twitter/X lo soportan.</div>
+</div>
+
+<div class="step-card">
+<h3>🔒 Gestión de Contraseñas</h3>
+<ul>
+<li>Usa contraseñas <strong>únicas</strong> para cada servicio. Nunca repitas contraseñas.</li>
+<li>Mínimo <strong>12 caracteres</strong> con mayúsculas, minúsculas, números y símbolos.</li>
+<li>Usa un <strong>gestor de contraseñas</strong> como Bitwarden (gratuito), 1Password o KeePass.</li>
+<li>Activa el <strong>monitoreo de filtraciones</strong> para saber si tu contraseña fue expuesta.</li>
+<li>Cambia tus contraseñas cada <strong>3-6 meses</strong> y nunca las compartas.</li>
+</ul>
+<div class="tip-box warn"><strong>⚠️ No uses:</strong> Tu nombre, fecha de nacimiento, "123456", "password" ni palabras del diccionario. Los acosadores pueden adivinar contraseñas débiles.</div>
+</div>
+
+<div class="step-card">
+<h3>👁️ Privacidad en Redes Sociales</h3>
+<ul>
+<li><strong>Perfiles privados:</strong> Configura tus cuentas como privadas. Solo tus contactos aprobados pueden ver tu contenido.</li>
+<li><strong>Revisa etiquetas:</strong> Activa la revisión de etiquetas para aprobar antes de que aparezcan en tu perfil.</li>
+<li><strong>Listas de amigos/seguidores:</strong> Revisa periódicamente quién te sigue. Elimina cuentas sospechosas.</li>
+<li><strong>Información personal:</strong> No publiques tu dirección, teléfono, ubicación en tiempo real ni documentos.</li>
+<li><strong>Historias/Estados:</strong> Configura quién puede ver tus historias. Oculta a personas específicas si es necesario.</li>
+</ul>
+</div>
+
+<div class="step-card">
+<h3>📱 Seguridad en el Dispositivo</h3>
+<ul>
+<li>Mantén tu sistema operativo y apps <strong>actualizados</strong> (las actualizaciones corrigen vulnerabilidades).</li>
+<li>Usa <strong>antivirus</strong> en tu computadora (Windows Defender es suficiente, o Malwarebytes gratis).</li>
+<li>No descargues apps de <strong>fuentes no oficiales</strong>. Solo Google Play o App Store.</li>
+<li>Revisa los <strong>permisos</strong> de cada app: ¿por qué una linterna necesita acceso a tus contactos?</li>
+<li>Activa <strong>Find My Device</strong> (Android) o <strong>Buscar mi iPhone</strong> (iOS) por si pierdes el teléfono.</li>
+</ul>
+</div>
+
+<div class="step-card">
+<h3>🚫 Cómo Bloquear a un Acosador</h3>
+<p>Si alguien te está acosando, bloquéalo inmediatamente. Así evitas que siga contactándote.</p>
+<div class="platform-grid">
+<div class="platform-card"><div class="platform-logo" style="background:linear-gradient(135deg,#405de6,#5851db,#833ab4,#c13584)">📸</div><h4>Instagram</h4><p>Perfil → ⋮ → Bloquear. También puedes restringir (los comentarios solo los ven ellos).</p></div>
+<div class="platform-card"><div class="platform-logo" style="background:#000">𝕏</div><h4>Twitter/X</h4><p>Perfil → ⋮ → Bloquear @usuario. Puedes silenciar o reportar desde el mismo menú.</p></div>
+<div class="platform-card"><div class="platform-logo" style="background:#1877f2">👤</div><h4>Facebook</h4><p>Perfil → ⋮ → Bloquear. También desde Configuración → Bloqueos.</p></div>
+<div class="platform-card"><div class="platform-logo" style="background:#25d366">💬</div><h4>WhatsApp</h4><p>Chat → ⋮ → Más → Bloquear. También reportar si es spam.</p></div>
+<div class="platform-card"><div class="platform-logo" style="background:#fe2c55">🎵</div><h4>TikTok</h4><p>Perfil → ⋮ → Bloquear. Puedes restringir la cuenta del acosador.</p></div>
+<div class="platform-card"><div class="platform-logo" style="background:#ff0000">▶️</div><h4>YouTube</h4><p>Perfil → ⋮ → Bloquear usuario. Los comentarios del bloqueado no aparecerán.</p></div>
+</div>
+<div class="tip-box danger"><strong>🚨 Importante:</strong> Después de bloquear, toma capturas de pantalla de todo el acoso como evidencia antes de que el acosador elimine los mensajes.</div>
+</div>
+</div></div>
+
+<div class="cl-panel" style="margin-top:16px">
+<div class="cl-panel-header"><h3>📋 Checklist de Seguridad Semanal</h3><p>Usa esta lista cada semana para mantenerte protegido.</p></div>
+<div class="cl-panel-body">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px">
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Revisé quién me sigue en redes</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Mis contraseñas son únicas y seguras</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> El 2FA está activado en mis cuentas</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Mi sistema operativo está actualizado</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> No compartí información personal sensible</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Mis perfiles están en modo privado</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Revisé los permisos de mis aplicaciones</div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border-radius:8px;font-size:13px"><span style="color:var(--green)">✅</span> Tengo copia de seguridad de mis datos</div>
+</div>
+</div></div>
+</main>
+
+<footer class="cl-footer"><p>SecNLP - Guía de Seguridad Digital contra el Ciberacoso</p>
+<p class="cl-footer-tech">Protégete. Bloquea. Reporta. No estás solo.</p></footer>
+</div>
+</body>
+</html>

