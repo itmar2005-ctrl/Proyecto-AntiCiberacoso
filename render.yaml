@@ -1,0 +1,15 @@
+# Render Blueprint - SecNLP Platform
+# Conecta tu repo de GitHub y Render lo detectará automáticamente
+services:
+  - type: web
+    name: secnlp-platform
+    env: python
+    buildCommand: |
+      cd secnlp-platform && pip install -r backend/requirements.txt
+    startCommand: |
+      cd secnlp-platform && uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: HF_HOME
+        value: /tmp/huggingface
